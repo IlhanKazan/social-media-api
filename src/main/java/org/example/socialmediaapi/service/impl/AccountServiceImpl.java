@@ -12,11 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-/*
-@AllArgsConstructor
-@NoArgsConstructor
-@RequiredArgsConstructor Bu ise sadece private final olanlari constructor'a inject eder
- */
 @Service
 public class AccountServiceImpl extends AbstractService implements AccountService {
 

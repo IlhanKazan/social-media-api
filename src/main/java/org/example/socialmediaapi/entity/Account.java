@@ -41,13 +41,6 @@ public class Account {
     @Column(name = "STATUS", nullable = false, columnDefinition = "INT DEFAULT 1")
     private int status;
 
-    /*
-    @Column(name = "CREATEDATE")
-    @LastModifiedDate //dbde updateDate'e yarar
-    @NotNull
-    private Date updateDate;
-     */
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATEDATE", columnDefinition = "CURRENT_TIMESTAMP()")
     @CreatedDate //dbdeki now() isine yariyo
@@ -62,9 +55,4 @@ public class Account {
             createDate = new Date();
         }
     }
-
-    /*
-    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private List<Post> posts;
-     */
 }

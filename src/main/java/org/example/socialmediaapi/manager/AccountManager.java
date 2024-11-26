@@ -5,7 +5,6 @@ import org.example.socialmediaapi.dto.response.AccountResponse;
 import org.example.socialmediaapi.entity.Account;
 import org.example.socialmediaapi.service.AccountService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
