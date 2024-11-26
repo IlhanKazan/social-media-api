@@ -10,9 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "POSTS",  uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"FLIGHT", "NUMBER"})
-})
+@Table(name = "POSTS")
 public class Post {
 
     @Id
