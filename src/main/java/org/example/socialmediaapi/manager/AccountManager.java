@@ -16,21 +16,21 @@ public class AccountManager {
         this.accountService = accountService;
     }
 
-    public AccountResponse getByAccountId(Long id) {
-        return accountService.getByAccountId(id);
+    public AccountResponse getById(Long id) {
+        return accountService.getById(id);
     }
 
-    public List<Account> getAllAccounts(){
+    public List<Account> getAll(){
         System.out.println("Get all accounts");
-        return accountService.getAllAccounts();
+        return accountService.getAll();
     }
 
     public AccountResponse save(AccountRequest accountRequest) {
         return accountService.save(accountRequest);
     }
 
-    public AccountResponse update(AccountRequest oldInfo, AccountRequest newInfo) {
-        return accountService.update(oldInfo, newInfo);
+    public AccountResponse update(Long id, AccountRequest newInfo) {
+        return accountService.update(id, newInfo);
     }
 
     public AccountResponse delete(long id) {

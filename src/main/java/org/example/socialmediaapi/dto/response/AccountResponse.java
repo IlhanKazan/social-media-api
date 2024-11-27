@@ -16,4 +16,5 @@ public class AccountResponse extends Response {
     private String phone;
     private int status;
     private Date createDate;
+    private Date updateDate;
 }

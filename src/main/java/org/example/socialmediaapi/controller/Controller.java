@@ -8,6 +8,6 @@ import javax.validation.Valid;
 
 public interface Controller {
     AccountResponse save(@Valid @RequestBody AccountRequest accountRequest);
-    AccountResponse update(@PathVariable(required = true, value = "id") AccountRequest oldInfo, @Valid @RequestBody AccountRequest newInfo);
+    AccountResponse update(@PathVariable(required = true, value = "id") Long id, @Valid @RequestBody AccountRequest newInfo);
     AccountResponse delete(@PathVariable(required = true, value = "id") Long id);
 }

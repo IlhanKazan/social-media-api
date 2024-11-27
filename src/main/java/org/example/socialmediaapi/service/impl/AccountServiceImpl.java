@@ -24,7 +24,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
     }
 
     @Override
-    public AccountResponse getByAccountId(Long id) {
+    public AccountResponse getById(Long id) {
         Account account = modelMapper.map(accountRepository.getById(id), Account.class);
         return modelMapper.map(account, AccountResponse.class);
     }
@@ -41,13 +41,14 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
 
     @Override
     @Transactional
-    public AccountResponse update(AccountRequest oldInfo, AccountRequest newInfo) {
-        Account oldAccount = modelMapper.map(oldInfo, Account.class);
+    public AccountResponse update(Long id, AccountRequest newInfo) {
+        Account oldAccount = modelMapper.map(accountRepository.getById(id), Account.class);
         Account newAccount = modelMapper.map(newInfo, Account.class);
         oldAccount.setUsername(newAccount.getUsername());
         oldAccount.setPassword(newAccount.getPassword());
         oldAccount.setEmail(newAccount.getEmail());
         oldAccount.setPhone(newAccount.getPhone());
+        oldAccount.setUpdateDate(new Date());
         accountRepository.save(oldAccount);
         return modelMapper.map(oldAccount, AccountResponse.class);
     }
@@ -59,7 +60,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
     }
 
     @Override
-    public List<Account> getAllAccounts() {
+    public List<Account> getAll() {
         return accountRepository.getAll();
     }
 }

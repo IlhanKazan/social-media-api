@@ -21,25 +21,26 @@ public class AccountController implements Controller {
     }
 
     @GetMapping("/get-by-account-id/{id}")
-    public AccountResponse getByIAccountId(@PathVariable Long id) {
-        return accountManager.getByAccountId(id);
+    public AccountResponse getById(@PathVariable Long id) {
+        return accountManager.getById(id);
     }
 
-    @GetMapping(value = "/get-all")
-    public List<Account> getAllAccounts() {
-        return accountManager.getAllAccounts();
+    @GetMapping(value = "/get-all-accounts")
+    public List<Account> getAll() {
+        return accountManager.getAll();
     }
 
     @Override
     @Validated
-    @PostMapping("")
+    @PostMapping("/save-account")
     public AccountResponse save(@Valid @RequestBody AccountRequest request) {
         return accountManager.save(request);
     }
 
     @Override
-    public AccountResponse update(@Valid @RequestBody AccountRequest oldInfo, @Valid @RequestBody AccountRequest newInfo) {
-        return accountManager.update(oldInfo, newInfo);
+    @PostMapping("/update-account-by-id/{id}")
+    public AccountResponse update(@PathVariable Long id, @Valid @RequestBody AccountRequest newInfo) {
+        return accountManager.update(id, newInfo);
     }
 
     @Override

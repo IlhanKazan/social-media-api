@@ -31,4 +31,7 @@ public class AccountRequest extends Request {
     @NotEmpty
     private Date createDate;
 
+    @NotEmpty
+    private Date updateDate;
+
 }

@@ -13,7 +13,8 @@ CREATE TABLE `SOCIAL_MEDIA_API`.`ACCOUNTS` (
                                                `email` VARCHAR(30) NOT NULL UNIQUE,
                                                `phone` VARCHAR(11) NOT NULL UNIQUE,
                                                `status` INT NOT NULL DEFAULT 1,
-                                               `createDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP());
+                                               `createDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+                                               `updateDate` TIMESTAMP);
 
 CREATE TABLE `SOCIAL_MEDIA_API`.`POSTS` (
                                             `postId` INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
@@ -21,6 +22,7 @@ CREATE TABLE `SOCIAL_MEDIA_API`.`POSTS` (
                                             `context` VARCHAR(255) NOT NULL,
                                             `status` INT NOT NULL DEFAULT 1,
                                             `createDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+                                            `updateDate` TIMESTAMP,
                                             CONSTRAINT `post_userId`
                                                 FOREIGN KEY (`userId`)
                                                     REFERENCES `SOCIAL_MEDIA_API`.`ACCOUNTS` (`userId`)
@@ -35,6 +37,7 @@ CREATE TABLE `SOCIAL_MEDIA_API`.`INTERACTIONS` (
                                                    `type` INT,
                                                    `status` INT NOT NULL DEFAULT 1,
                                                    `createDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+                                                   `updateDate` TIMESTAMP,
                                                    CONSTRAINT `interaction_userId`
                                                        FOREIGN KEY (`userId`)
                                                            REFERENCES `SOCIAL_MEDIA_API`.`ACCOUNTS` (`userId`)

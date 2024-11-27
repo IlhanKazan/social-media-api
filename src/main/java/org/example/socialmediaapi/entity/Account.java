@@ -3,6 +3,8 @@ package org.example.socialmediaapi.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import java.util.Date;
 
@@ -43,8 +45,13 @@ public class Account {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATEDATE", columnDefinition = "CURRENT_TIMESTAMP()")
-    @CreatedDate //dbdeki now() isine yariyo
+    @CreationTimestamp //dbdeki now() isine yariyo
     private Date createDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "UPDATEDATE")
+    @UpdateTimestamp
+    private Date updateDate;
 
     @PrePersist
     public void prePersist() {
