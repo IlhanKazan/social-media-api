@@ -11,8 +11,8 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
-public class AccountController implements Controller {
+@RequestMapping("/api/account")
+public class AccountController implements Controller<AccountRequest, AccountResponse> {
 
     private final AccountManager accountManager;
 
@@ -20,25 +20,26 @@ public class AccountController implements Controller {
         this.accountManager = accountManager;
     }
 
-    @GetMapping("/get-by-account-id/{id}")
+    @GetMapping("/get-by-id/{id}")
     public AccountResponse getById(@PathVariable Long id) {
         return accountManager.getById(id);
     }
 
-    @GetMapping(value = "/get-all-accounts")
+    @GetMapping(value = "/get-all")
     public List<Account> getAll() {
         return accountManager.getAll();
     }
 
     @Override
     @Validated
-    @PostMapping("/save-account")
-    public AccountResponse save(@Valid @RequestBody AccountRequest request) {
+    @PostMapping("/save")
+    public AccountResponse save(AccountRequest request) {
         return accountManager.save(request);
     }
 
     @Override
-    @PostMapping("/update-account-by-id/{id}")
+    @Validated
+    @PostMapping("/update-by-id/{id}")
     public AccountResponse update(@PathVariable Long id, @Valid @RequestBody AccountRequest newInfo) {
         return accountManager.update(id, newInfo);
     }

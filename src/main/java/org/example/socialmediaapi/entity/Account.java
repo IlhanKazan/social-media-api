@@ -6,6 +6,8 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Getter
@@ -25,19 +27,19 @@ public class Account {
     private int userId;
 
     @Column(name = "USERNAME", unique = true, length = 15)
-    @NotNull
+    @NotEmpty
     private String username;
 
     @Column(name = "PASSWORD", length = 15)
-    @NotNull
+    @NotEmpty
     private String password;
 
     @Column(name = "EMAIL", unique = true, length = 30)
-    @NotNull
+    @NotEmpty
     private String email;
 
     @Column(name = "PHONE", unique = true, length = 11)
-    @NotNull
+    @NotEmpty
     private String phone;
 
     @Column(name = "STATUS", nullable = false, columnDefinition = "INT DEFAULT 1")
