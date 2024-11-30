@@ -1,15 +1,17 @@
 package org.example.socialmediaapi.controller;
 
+import jakarta.validation.Valid;
 import org.example.socialmediaapi.dto.request.PostRequest;
 import org.example.socialmediaapi.dto.response.PostResponse;
+import org.example.socialmediaapi.entity.Post;
 import org.example.socialmediaapi.manager.PostManager;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/post")
 public class PostController implements Controller<PostRequest, PostResponse>{
 
     private final PostManager postManager;
@@ -21,11 +23,12 @@ public class PostController implements Controller<PostRequest, PostResponse>{
     @Override
     @Validated
     @PostMapping("/save")
-    public PostResponse save(PostRequest postRequest) {
+    public PostResponse save(@Valid @RequestBody PostRequest postRequest) {
         return postManager.save(postRequest);
     }
 
     @Override
+    @Validated
     public PostResponse update(Long id, PostRequest newInfo) {
         return null;
     }
@@ -33,6 +36,16 @@ public class PostController implements Controller<PostRequest, PostResponse>{
     @Override
     public PostResponse delete(Long id) {
         return null;
+    }
+
+    @GetMapping("/get-by-id/{id}")
+    public PostResponse getById(@PathVariable Long id){
+        return postManager.getById(id);
+    }
+
+    @GetMapping("/get-all")
+    public List<Post> getAll(){
+        return postManager.getAll();
     }
 
 }

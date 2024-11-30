@@ -1,7 +1,6 @@
 package org.example.socialmediaapi.dto.response;
 
 import lombok.*;
-import org.example.socialmediaapi.entity.Account;
 import java.util.Date;
 
 @Getter
@@ -11,9 +10,9 @@ import java.util.Date;
 @ToString
 public class PostResponse extends Response {
     private int postId;
-    private Account userId;
+    private int userId;
     private String context;
     private int status;
     private Date createDate;
-    private Date updatedDate;
+    private Date updateDate;
 }

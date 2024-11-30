@@ -1,12 +1,9 @@
 package org.example.socialmediaapi.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.validation.constraints.NotEmpty;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -14,45 +11,23 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "POSTS", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"POSTID"})
-})
-public class Post {
+@Table(name = "POSTS")
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "POSTID")
+    @Column(name = "POSTID", unique = true, nullable = false)
     private int postId;
 
-    @ManyToOne
-    @JoinColumn(name = "ACCOUNTS", referencedColumnName = "userId")
-    private Account userId;
+    /*@JoinColumn(name = "post_userId", referencedColumnName = "userId")
+    private int userId;*/
+
+    @Column(name = "USERID")
+    @NotNull
+    private int userId;
 
     @Column(name = "CONTEXT", length = 255)
-    private String context;
-
-    @Column(name = "STATUS", nullable = false, columnDefinition = "INT DEFAULT 1")
     @NotEmpty
-    private int status;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATEDATE", columnDefinition = "CURRENT_TIMESTAMP()")
-    @CreationTimestamp
-    private Date createDate;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATEDATE")
-    @UpdateTimestamp
-    private Date updatedDate;
-
-    @PrePersist
-    public void prePersist() {
-        if (status != 0 && status != 1) {
-            status = 1;
-        }
-        if (createDate == null) {
-            createDate = new Date();
-        }
-    }
+    private String context;
 
 }

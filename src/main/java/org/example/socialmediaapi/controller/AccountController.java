@@ -1,17 +1,17 @@
 package org.example.socialmediaapi.controller;
 
+import jakarta.validation.Valid;
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
 import org.example.socialmediaapi.entity.Account;
 import org.example.socialmediaapi.manager.AccountManager;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/account")
 public class AccountController implements Controller<AccountRequest, AccountResponse> {
 
     private final AccountManager accountManager;
@@ -33,13 +33,13 @@ public class AccountController implements Controller<AccountRequest, AccountResp
     @Override
     @Validated
     @PostMapping("/save")
-    public AccountResponse save(AccountRequest request) {
+    public AccountResponse save(@Valid @RequestBody AccountRequest request) {
         return accountManager.save(request);
     }
 
     @Override
     @Validated
-    @PostMapping("/update-by-id/{id}")
+    @PostMapping("/update/{id}")
     public AccountResponse update(@PathVariable Long id, @Valid @RequestBody AccountRequest newInfo) {
         return accountManager.update(id, newInfo);
     }

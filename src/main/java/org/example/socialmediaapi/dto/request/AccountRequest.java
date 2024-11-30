@@ -1,8 +1,8 @@
 package org.example.socialmediaapi.dto.request;
 
+import jakarta.validation.constraints.Email;
 import lombok.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class AccountRequest extends Request {
     private String password;
 
     @Email
-    @NotEmpty
+    @NotEmpty(message = "Email cannot be empty")
     private String email;
 
     @NotEmpty

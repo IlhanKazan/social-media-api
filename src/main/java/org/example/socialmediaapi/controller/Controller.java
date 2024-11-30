@@ -4,7 +4,7 @@ import org.example.socialmediaapi.dto.request.Request;
 import org.example.socialmediaapi.dto.response.Response;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public interface Controller<T extends Request, R extends Response>{
     R save(@Valid @RequestBody T Request);
