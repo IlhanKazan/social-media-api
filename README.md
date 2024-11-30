@@ -15,4 +15,4 @@ Kullanılan Teknolojiler:
 - Hibernate
 - JPA
 - Lombok
-- ModelMapper 
+- Mapstruct 
