@@ -29,8 +29,9 @@ public class PostController implements Controller<PostRequest, PostResponse>{
 
     @Override
     @Validated
-    public PostResponse update(Long id, PostRequest newInfo) {
-        return null;
+    @PostMapping("/update/{id}")
+    public PostResponse update(@Valid @PathVariable Long id, @Valid @RequestBody PostRequest newInfo) {
+        return postManager.update(id, newInfo);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class PostController implements Controller<PostRequest, PostResponse>{
     }
 
     @GetMapping("/get-all")
-    public List<Post> getAll(){
+    public List<PostResponse> getAll(){
         return postManager.getAll();
     }
 

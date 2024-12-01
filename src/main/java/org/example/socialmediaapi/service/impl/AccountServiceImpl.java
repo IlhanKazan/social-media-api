@@ -5,6 +5,7 @@ import org.example.socialmediaapi.dto.response.AccountResponse;
 import org.example.socialmediaapi.entity.Account;
 import org.example.socialmediaapi.mappers.AccountMapper;
 import org.example.socialmediaapi.repository.AccountRepository;
+import org.example.socialmediaapi.repository.PostRepository;
 import org.example.socialmediaapi.service.AbstractService;
 import org.example.socialmediaapi.service.AccountService;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final PostRepository postRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper accountMapper) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper accountMapper, PostRepository postRepository) {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -50,18 +53,20 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
     @Override
     @Transactional
     public AccountResponse delete(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<Account> getAll() {
-        return accountRepository.getAll();
-    }
-
-    @Override
-    public AccountResponse getById(Long id) {
         Account account = accountRepository.getById(id);
+        account.setStatus(0);
+        account.setUpdateDate(new Date());
         return accountMapper.accountToResponse(account);
+    }
+
+    @Override
+    public List<AccountResponse> getAll() {
+        return accountMapper.accountsToResponses(accountRepository.findAll());
+    }
+
+    @Override
+    public AccountResponse getById(Long id) {;
+        return accountMapper.accountToResponse(accountRepository.getById(id));
     }
 
 }

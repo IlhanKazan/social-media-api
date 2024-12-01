@@ -24,7 +24,7 @@ CREATE TABLE `SOCIAL_MEDIA_API`.`POSTS` (
                                             `createDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
                                             `updateDate` TIMESTAMP,
                                             CONSTRAINT `post_userId`
-                                                FOREIGN KEY (`userId`)
+                                                    FOREIGN KEY (`userId`)
                                                     REFERENCES `SOCIAL_MEDIA_API`.`ACCOUNTS` (`userId`)
                                                     ON DELETE CASCADE
                                                     ON UPDATE CASCADE);

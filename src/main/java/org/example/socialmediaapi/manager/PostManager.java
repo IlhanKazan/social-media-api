@@ -16,12 +16,10 @@ public class PostManager {
         this.postService = postService;
     }
 
-    public PostResponse save(PostRequest postRequest) {
-        return postService.save(postRequest);
-    }
+    public PostResponse save(PostRequest postRequest) { return postService.save(postRequest); }
 
-    public PostResponse update(PostRequest postRequest) {
-        return null;
+    public PostResponse update(Long id, PostRequest postRequest) {
+        return postService.update(id, postRequest);
     }
 
     public PostResponse delete(PostRequest postRequest) {
@@ -32,7 +30,7 @@ public class PostManager {
         return postService.getById(id);
     }
 
-    public List<Post> getAll() {
+    public List<PostResponse> getAll() {
         return postService.getAll();
     }
 

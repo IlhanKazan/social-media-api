@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface AccountService extends Service<AccountRequest, AccountResponse> {
     AccountResponse getById(Long id);
-    List<Account> getAll();
+    List<AccountResponse> getAll();
 }

@@ -20,16 +20,6 @@ public class AccountController implements Controller<AccountRequest, AccountResp
         this.accountManager = accountManager;
     }
 
-    @GetMapping("/get-by-id/{id}")
-    public AccountResponse getById(@PathVariable Long id) {
-        return accountManager.getById(id);
-    }
-
-    @GetMapping(value = "/get-all")
-    public List<Account> getAll() {
-        return accountManager.getAll();
-    }
-
     @Override
     @Validated
     @PostMapping("/save")
@@ -45,7 +35,18 @@ public class AccountController implements Controller<AccountRequest, AccountResp
     }
 
     @Override
+    @GetMapping("/delete/{id}")
     public AccountResponse delete(Long id) {
-        return null;
+        return accountManager.delete(id);
+    }
+
+    @GetMapping("/get-by-id/{id}")
+    public AccountResponse getById(@PathVariable Long id) {
+        return accountManager.getById(id);
+    }
+
+    @GetMapping(value = "/get-all")
+    public List<AccountResponse> getAll() {
+        return accountManager.getAll();
     }
 }

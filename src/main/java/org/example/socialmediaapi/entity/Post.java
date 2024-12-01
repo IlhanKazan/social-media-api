@@ -24,6 +24,7 @@ public class Post extends BaseEntity {
 
     @Column(name = "USERID")
     @NotNull
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private int userId;
 
     @Column(name = "CONTEXT", length = 255)

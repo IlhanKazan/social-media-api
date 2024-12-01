@@ -9,7 +9,6 @@ import org.example.socialmediaapi.service.AbstractService;
 import org.example.socialmediaapi.service.PostService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 
@@ -37,13 +36,20 @@ public class PostServiceImpl extends AbstractService implements PostService {
     @Override
     @Transactional
     public PostResponse update(Long id, PostRequest newInfo) {
-        return null;
+        Post oldPost = postRepository.getById(id);
+        Post newPost = postMapper.requestToPost(newInfo);
+        oldPost.setContext(newPost.getContext());
+        return postMapper.postToResponse(oldPost);
     }
 
     @Override
     @Transactional
     public PostResponse delete(Long id) {
-        return null;
+        Post post = postRepository.getById(id);
+        post.setStatus(0);
+        post.setUpdateDate(new Date());
+        postRepository.save(post);
+        return postMapper.postToResponse(post);
     }
 
     @Override
@@ -52,9 +58,7 @@ public class PostServiceImpl extends AbstractService implements PostService {
     }
 
     @Override
-    @Transactional
-    public List<Post> getAll() {
-        // List<Post> posts = modelMapper.map(postRepository.getAll(), List<PostResponse>.class);
-        return postRepository.getAll();
+    public List<PostResponse> getAll() {
+        return postMapper.postsToResponses(postRepository.findAll());
     }
 }

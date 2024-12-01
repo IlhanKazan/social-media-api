@@ -23,7 +23,7 @@ public abstract class BaseEntity {
     public int status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATEDATE", columnDefinition = "CURRENT_TIMESTAMP()", insertable = false, updatable = false)
+    @Column(name = "CREATEDATE", columnDefinition = "CURRENT_TIMESTAMP()", updatable = false)
     @CreationTimestamp
     public Date createDate;
 
