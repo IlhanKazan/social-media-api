@@ -9,7 +9,7 @@ public class TestController {
 
     @GetMapping(value = "/get-new")
     public String getNew() {
-        return "Ali";
+        return "Test";
     }
 
 }
