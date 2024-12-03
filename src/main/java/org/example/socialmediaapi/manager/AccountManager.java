@@ -46,5 +46,7 @@ public class AccountManager {
         return accountService.getById(id);
     }
 
-    public List<AccountResponse> getAll(){ return accountService.getAll(); }
+    public List<AccountResponse> getAll(){
+        return accountService.getAll();
+    }
 }

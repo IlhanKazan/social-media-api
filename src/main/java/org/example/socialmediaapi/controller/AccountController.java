@@ -3,7 +3,6 @@ package org.example.socialmediaapi.controller;
 import jakarta.validation.Valid;
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
-import org.example.socialmediaapi.entity.Account;
 import org.example.socialmediaapi.manager.AccountManager;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +35,7 @@ public class AccountController implements Controller<AccountRequest, AccountResp
 
     @Override
     @GetMapping("/delete/{id}")
-    public AccountResponse delete(Long id) {
+    public AccountResponse delete(@PathVariable Long id) {
         return accountManager.delete(id);
     }
 
@@ -46,7 +45,5 @@ public class AccountController implements Controller<AccountRequest, AccountResp
     }
 
     @GetMapping(value = "/get-all")
-    public List<AccountResponse> getAll() {
-        return accountManager.getAll();
-    }
+    public List<AccountResponse> getAll() { return accountManager.getAll(); }
 }

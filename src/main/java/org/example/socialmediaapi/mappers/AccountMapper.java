@@ -10,9 +10,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
     Account requestToAccount(AccountRequest accountRequest);
-    @Mapping(source = "status", target = "status")
-    @Mapping(source = "createDate", target = "createDate")
-    @Mapping(source = "updateDate", target = "updateDate")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "phone", target = "phone")
     AccountResponse accountToResponse(Account account);
     List<AccountResponse> accountsToResponses(List<Account> accounts);
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class AccountResponse extends Response {
-    private int userId;
+    private int accountId;
     private String username;
     private String password;
     private String email;

@@ -17,8 +17,8 @@ public class Account extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USERID", unique = true, nullable = false)
-    private int userId;
+    @Column(name = "ACCOUNTID", unique = true, nullable = false)
+    private int accountId;
 
     @Column(name = "USERNAME", unique = true, length = 15)
     @NotEmpty
@@ -37,7 +37,7 @@ public class Account extends BaseEntity {
     @NotEmpty
     private String phone;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "accountId")
     private List<Post> posts;
 
 }

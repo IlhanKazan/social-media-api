@@ -18,12 +18,10 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
-    private final PostRepository postRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper accountMapper, PostRepository postRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
-        this.postRepository = postRepository;
     }
 
     @Override

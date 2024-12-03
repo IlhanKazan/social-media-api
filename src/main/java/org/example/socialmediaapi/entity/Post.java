@@ -1,9 +1,12 @@
 package org.example.socialmediaapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,16 +22,17 @@ public class Post extends BaseEntity {
     @Column(name = "POSTID", unique = true, nullable = false)
     private int postId;
 
-    /*@JoinColumn(name = "post_userId", referencedColumnName = "userId")
-    private int userId;*/
-
-    @Column(name = "USERID")
+    @Column(name = "ACCOUNTID")
     @NotNull
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
-    private int userId;
+    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
+    private int accountId;
 
     @Column(name = "CONTEXT", length = 255)
     @NotEmpty
     private String context;
+
+    @OneToMany(mappedBy = "postId")
+    private List<Interaction> interactions;
+
 
 }

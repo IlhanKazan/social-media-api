@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 public class PostRequest extends Request{
 
     @NotNull
-    private int userId;
+    private int accountId;
 
     @NotEmpty
     private String context;

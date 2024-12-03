@@ -6,7 +6,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.util.Date;
 
 @Getter
@@ -23,7 +22,7 @@ public abstract class BaseEntity {
     public int status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATEDATE", columnDefinition = "CURRENT_TIMESTAMP()", updatable = false)
+    @Column(name = "CREATEDATE", updatable = false)
     @CreationTimestamp
     public Date createDate;
 

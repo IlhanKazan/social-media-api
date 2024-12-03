@@ -7,7 +7,7 @@ DROP SCHEMA IF EXISTS SOCIAL_MEDIA_API;
 CREATE SCHEMA SOCIAL_MEDIA_API;
 
 CREATE TABLE `SOCIAL_MEDIA_API`.`ACCOUNTS` (
-                                               `userId` INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
+                                               `accountId` INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
                                                `username` VARCHAR(15) NOT NULL UNIQUE,
                                                `password` VARCHAR(15) NOT NULL,
                                                `email` VARCHAR(30) NOT NULL UNIQUE,
@@ -18,29 +18,29 @@ CREATE TABLE `SOCIAL_MEDIA_API`.`ACCOUNTS` (
 
 CREATE TABLE `SOCIAL_MEDIA_API`.`POSTS` (
                                             `postId` INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
-                                            `userId` INT NOT NULL,
+                                            `accountId` INT NOT NULL,
                                             `context` VARCHAR(255) NOT NULL,
                                             `status` INT NOT NULL DEFAULT 1,
                                             `createDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
                                             `updateDate` TIMESTAMP,
-                                            CONSTRAINT `post_userId`
-                                                    FOREIGN KEY (`userId`)
-                                                    REFERENCES `SOCIAL_MEDIA_API`.`ACCOUNTS` (`userId`)
+                                            CONSTRAINT `post_accountId`
+                                                    FOREIGN KEY (`accountId`)
+                                                    REFERENCES `SOCIAL_MEDIA_API`.`ACCOUNTS` (`accountId`)
                                                     ON DELETE CASCADE
                                                     ON UPDATE CASCADE);
 
 CREATE TABLE `SOCIAL_MEDIA_API`.`INTERACTIONS` (
                                                    `interactionId` INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
-                                                   `userId` INT NOT NULL,
+                                                   `accountId` INT NOT NULL,
                                                    `postId` INT NOT NULL,
                                                    `context` VARCHAR(255),
                                                    `type` INT,
                                                    `status` INT NOT NULL DEFAULT 1,
                                                    `createDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
                                                    `updateDate` TIMESTAMP,
-                                                   CONSTRAINT `interaction_userId`
-                                                       FOREIGN KEY (`userId`)
-                                                           REFERENCES `SOCIAL_MEDIA_API`.`ACCOUNTS` (`userId`)
+                                                   CONSTRAINT `interaction_accountId`
+                                                       FOREIGN KEY (`accountId`)
+                                                           REFERENCES `SOCIAL_MEDIA_API`.`ACCOUNTS` (`accountId`)
                                                            ON DELETE CASCADE
                                                            ON UPDATE CASCADE,
                                                    CONSTRAINT `interaction_postId`

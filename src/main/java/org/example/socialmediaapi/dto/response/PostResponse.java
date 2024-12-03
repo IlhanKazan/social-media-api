@@ -10,7 +10,7 @@ import java.util.Date;
 @ToString
 public class PostResponse extends Response {
     private int postId;
-    private int userId;
+    private int accountId;
     private String context;
     private int status;
     private Date createDate;
