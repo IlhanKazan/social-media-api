@@ -9,7 +9,6 @@ import org.example.socialmediaapi.service.AbstractService;
 import org.example.socialmediaapi.service.InteractionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 
@@ -37,13 +36,22 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
     @Override
     @Transactional
     public InteractionResponse update(Long id, InteractionRequest newInfo) {
-        return null;
+        Interaction oldInteraction = interactionRepository.getById(id);
+        Interaction newInteraction = interactionMapper.requestToInteraction(newInfo);
+        if(oldInteraction.getType() == 0) {
+            oldInteraction.setContext(newInteraction.getContext());
+        }
+        oldInteraction.setUpdateDate(new Date());
+        return interactionMapper.interactionToResponse(oldInteraction);
     }
 
     @Override
     @Transactional
     public InteractionResponse delete(Long id) {
-        return null;
+        Interaction interaction = interactionRepository.getById(id);
+        interaction.setStatus(0);
+        interactionRepository.save(interaction);
+        return interactionMapper.interactionToResponse(interaction);
     }
 
     @Override
@@ -53,6 +61,6 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
 
     @Override
     public List<InteractionResponse> getAll() {
-        return interactionMapper.interactionsToResponses(interactionRepository.findAll());
+        return interactionMapper.interactionsToResponses(interactionRepository.getAll());
     }
 }

@@ -30,13 +30,14 @@ public class PostController implements Controller<PostRequest, PostResponse>{
     @Override
     @Validated
     @PostMapping("/update/{id}")
-    public PostResponse update(@Valid @PathVariable Long id, @Valid @RequestBody PostRequest newInfo) {
+    public PostResponse update(@PathVariable Long id, @Valid @RequestBody PostRequest newInfo) {
         return postManager.update(id, newInfo);
     }
 
     @Override
-    public PostResponse delete(Long id) {
-        return null;
+    @GetMapping("/delete/{id}")
+    public PostResponse delete(@PathVariable Long id) {
+        return postManager.delete(id);
     }
 
     @GetMapping("/get-by-id/{id}")

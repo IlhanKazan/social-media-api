@@ -1,8 +1,11 @@
 package org.example.socialmediaapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.example.socialmediaapi.constants.Status;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +22,7 @@ public abstract class BaseEntity {
 
     @Column(name = "STATUS", nullable = false, columnDefinition = "INT DEFAULT 1")
     @NotNull
+    // @JsonInclude(JsonInclude.Include.NON_NULL)
     public int status;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -30,5 +34,10 @@ public abstract class BaseEntity {
     @Column(name = "UPDATEDATE", insertable = false, updatable = false)
     @UpdateTimestamp
     public Date updateDate;
+
+    /*@JsonGetter("status")
+    public int getStatus() {
+        return status == 1 ? Status.ACTIVE.getValue() : Status.INACTIVE.getValue();
+    }*/
 
 }

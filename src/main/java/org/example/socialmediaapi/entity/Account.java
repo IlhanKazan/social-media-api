@@ -40,4 +40,7 @@ public class Account extends BaseEntity {
     @OneToMany(mappedBy = "accountId")
     private List<Post> posts;
 
+    @OneToMany(mappedBy = "accountId")
+    private List<Interaction> interactions;
+
 }

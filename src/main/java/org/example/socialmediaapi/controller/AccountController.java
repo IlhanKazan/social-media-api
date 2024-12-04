@@ -45,5 +45,12 @@ public class AccountController implements Controller<AccountRequest, AccountResp
     }
 
     @GetMapping(value = "/get-all")
-    public List<AccountResponse> getAll() { return accountManager.getAll(); }
+    public List<AccountResponse> getAll() {
+        return accountManager.getAll();
+    }
+
+    @GetMapping("/get-by-username/{username}")
+    public AccountResponse getByUsername(@PathVariable String username) {
+        return accountManager.getByUsername(username);
+    }
 }

@@ -59,7 +59,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
 
     @Override
     public List<AccountResponse> getAll() {
-        return accountMapper.accountsToResponses(accountRepository.findAll());
+        return accountMapper.accountsToResponses(accountRepository.getAll());
     }
 
     @Override

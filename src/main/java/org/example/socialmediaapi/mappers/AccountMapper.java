@@ -14,6 +14,7 @@ public interface AccountMapper {
     @Mapping(source = "password", target = "password")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "phone", target = "phone")
+    @Mapping(source = "interactions", target = "interactions")
     AccountResponse accountToResponse(Account account);
     List<AccountResponse> accountsToResponses(List<Account> accounts);
 }

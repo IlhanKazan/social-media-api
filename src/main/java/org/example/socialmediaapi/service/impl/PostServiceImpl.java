@@ -59,6 +59,6 @@ public class PostServiceImpl extends AbstractService implements PostService {
 
     @Override
     public List<PostResponse> getAll() {
-        return postMapper.postsToResponses(postRepository.findAll());
+        return postMapper.postsToResponses(postRepository.getAll());
     }
 }
