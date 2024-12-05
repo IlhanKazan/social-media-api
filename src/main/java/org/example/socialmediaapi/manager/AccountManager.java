@@ -1,5 +1,6 @@
 package org.example.socialmediaapi.manager;
 
+import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
 import org.example.socialmediaapi.entity.Account;
@@ -39,22 +40,24 @@ public class AccountManager {
     public AccountResponse delete(long id) {
         Account account = accountRepository.getById(id);
         for (Post post : account.getPosts()) {
-            if (post != null)
+            if (post != null) {
                 postManager.delete(Long.valueOf(post.getPostId()));
+            }
         }
         for (Interaction interaction : account.getInteractions()) {
-            if (interaction != null)
+            if (interaction != null) {
                 interactionManager.delete(Long.valueOf(interaction.getInteractionId()));
+            }
         }
         return accountService.delete(id);
     }
 
     public AccountResponse getById(Long id) {
-        return accountService.getById(id);
+        return accountMapper.accountToResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
     public List<AccountResponse> getAll(){
-        return accountService.getAll();
+        return accountMapper.accountsToResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
     }
 
     public AccountResponse getByUsername(String username) {

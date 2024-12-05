@@ -1,5 +1,6 @@
 package org.example.socialmediaapi.service.impl;
 
+import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.PostRequest;
 import org.example.socialmediaapi.dto.response.PostResponse;
 import org.example.socialmediaapi.entity.Post;
@@ -39,6 +40,7 @@ public class PostServiceImpl extends AbstractService implements PostService {
         Post oldPost = postRepository.getById(id);
         Post newPost = postMapper.requestToPost(newInfo);
         oldPost.setContext(newPost.getContext());
+        postRepository.save(oldPost);
         return postMapper.postToResponse(oldPost);
     }
 
@@ -52,13 +54,4 @@ public class PostServiceImpl extends AbstractService implements PostService {
         return postMapper.postToResponse(post);
     }
 
-    @Override
-    public PostResponse getById(long id) {
-        return postMapper.postToResponse(postRepository.getById(id));
-    }
-
-    @Override
-    public List<PostResponse> getAll() {
-        return postMapper.postsToResponses(postRepository.getAll());
-    }
 }

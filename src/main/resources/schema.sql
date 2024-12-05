@@ -33,7 +33,7 @@ CREATE TABLE `SOCIAL_MEDIA_API`.`INTERACTIONS` (
                                                    `interactionId` INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
                                                    `accountId` INT NOT NULL,
                                                    `postId` INT NOT NULL,
-                                                   `context` VARCHAR(255),
+                                                   `context` VARCHAR(255) NOT NULL,
                                                    `type` INT,
                                                    `status` INT NOT NULL DEFAULT 1,
                                                    `createDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),

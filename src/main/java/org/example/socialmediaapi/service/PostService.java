@@ -5,6 +5,4 @@ import org.example.socialmediaapi.dto.response.PostResponse;
 import java.util.List;
 
 public interface PostService extends Service<PostRequest, PostResponse>{
-    PostResponse getById(long id);
-    List<PostResponse> getAll();
 }

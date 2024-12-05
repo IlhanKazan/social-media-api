@@ -6,8 +6,8 @@ INSERT INTO SOCIAL_MEDIA_API.POSTS VALUES(default, 1, 'Merhaba Dünya!', default
 INSERT INTO SOCIAL_MEDIA_API.POSTS VALUES(default, 3, 'Merhaba Ilhan!', default,  NOW(), NULL);
 INSERT INTO SOCIAL_MEDIA_API.POSTS VALUES(default, 4, 'Bugun hava cok bozdu!', default, NOW(), NULL);
 INSERT INTO SOCIAL_MEDIA_API.POSTS VALUES(default, 2, 'Hoca imza almaya basladi mi?', default, NOW(), NULL);
-INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 2, 1,'Sana Da Merhaba Deniz!', 0, default, NOW(), NULL);
-INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 2, 1, default, 1, default, NOW(), NULL);
+INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 2, 2,'Sana Da Merhaba Deniz!', 0, default, NOW(), NULL);
+INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 2, 1, ' ', 1, default, NOW(), NULL);
 INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 3, 3, 'Gercekten buz gibiydi!', 0, default, NOW(), NULL);
-INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 4, 4, default, 1, default, NOW(), NULL);
-INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 1, 1, default, 2, default, NOW(), NULL);
+INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 4, 4, ' ', 1, default, NOW(), NULL);
+INSERT INTO SOCIAL_MEDIA_API.INTERACTIONS VALUES(default, 1, 1, ' ', 2, default, NOW(), NULL);

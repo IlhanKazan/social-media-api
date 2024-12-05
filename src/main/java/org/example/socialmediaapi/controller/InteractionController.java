@@ -1,5 +1,6 @@
 package org.example.socialmediaapi.controller;
 
+import org.example.socialmediaapi.constants.InteractionType;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
 import org.example.socialmediaapi.manager.InteractionManager;
@@ -46,6 +47,21 @@ public class InteractionController implements Controller<InteractionRequest, Int
     @GetMapping("/get-all")
     public List<InteractionResponse> getAll() {
         return interactionManager.getAll();
+    }
+
+    @GetMapping("/get-all-comments")
+    public List<InteractionResponse> getAllComments() {
+        return interactionManager.getByType(InteractionType.COMMENT.getValue());
+    }
+
+    @GetMapping("/get-all-likes")
+    public List<InteractionResponse> getAllLikes() {
+        return interactionManager.getByType(InteractionType.LIKE.getValue());
+    }
+
+    @GetMapping("/get-all-dislikes")
+    public List<InteractionResponse> getAllDislikes() {
+        return interactionManager.getByType(InteractionType.DISLIKE.getValue());
     }
 
 }

@@ -22,7 +22,7 @@ public abstract class BaseEntity {
 
     @Column(name = "STATUS", nullable = false, columnDefinition = "INT DEFAULT 1")
     @NotNull
-    // @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public int status;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,7 +31,7 @@ public abstract class BaseEntity {
     public Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "UPDATEDATE", insertable = false, updatable = false)
+    @Column(name = "UPDATEDATE", insertable = false)
     @UpdateTimestamp
     public Date updateDate;
 

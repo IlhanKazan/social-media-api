@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query(value = "SELECT * FROM SOCIAL_MEDIA_API.POSTS WHERE STATUS = 1", nativeQuery = true)
-    List<Post> getAll();
+    List<Post> findAllByStatus(int status);
+    Post findByAccountIdAndStatus(Long accountId, int status);
 }

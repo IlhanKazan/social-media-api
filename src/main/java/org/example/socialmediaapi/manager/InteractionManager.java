@@ -1,7 +1,10 @@
 package org.example.socialmediaapi.manager;
 
+import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
+import org.example.socialmediaapi.mappers.InteractionMapper;
+import org.example.socialmediaapi.repository.InteractionRepository;
 import org.example.socialmediaapi.service.InteractionService;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +14,13 @@ import java.util.List;
 public class InteractionManager {
 
     private final InteractionService interactionService;
+    private final InteractionMapper interactionMapper;
+    private final InteractionRepository interactionRepository;
 
-    public InteractionManager(InteractionService interactionService) {
+    public InteractionManager(InteractionService interactionService, InteractionMapper interactionMapper, InteractionRepository interactionRepository) {
         this.interactionService = interactionService;
+        this.interactionMapper = interactionMapper;
+        this.interactionRepository = interactionRepository;
     }
 
     public InteractionResponse save(InteractionRequest request) {
@@ -29,11 +36,15 @@ public class InteractionManager {
     }
 
     public InteractionResponse getById(Long id) {
-        return interactionService.getById(id);
+        return interactionMapper.interactionToResponse(interactionRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
     public List<InteractionResponse> getAll() {
-        return interactionService.getAll();
+        return interactionMapper.interactionsToResponses(interactionRepository.findAllByStatus(Status.ACTIVE.getValue()));
+    }
+
+    public List<InteractionResponse> getByType(int type) {
+        return interactionMapper.interactionsToResponses(interactionRepository.findAllByType(type));
     }
 
 }

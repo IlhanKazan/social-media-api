@@ -5,6 +5,4 @@ import org.example.socialmediaapi.dto.response.InteractionResponse;
 import java.util.List;
 
 public interface InteractionService extends Service<InteractionRequest, InteractionResponse> {
-    InteractionResponse getById(long id);
-    List<InteractionResponse> getAll();
 }

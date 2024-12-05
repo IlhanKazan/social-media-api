@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface InteractionRepository extends JpaRepository<Interaction, Long> {
-    @Query(value = "SELECT * FROM SOCIAL_MEDIA_API.INTERACTIONS WHERE STATUS = 1", nativeQuery = true)
-    List<Interaction> getAll();
+    List<Interaction> findAllByStatus(int status);
+    Interaction findByAccountIdAndStatus(Long id, int status);
+    List<Interaction> findAllByType(int type);
+    List<Interaction> findAllByPostIdAndType(int postId, int type);
 }

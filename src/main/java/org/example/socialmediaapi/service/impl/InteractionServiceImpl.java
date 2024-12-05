@@ -1,5 +1,6 @@
 package org.example.socialmediaapi.service.impl;
 
+import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
 import org.example.socialmediaapi.entity.Interaction;
@@ -40,8 +41,9 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
         Interaction newInteraction = interactionMapper.requestToInteraction(newInfo);
         if(oldInteraction.getType() == 0) {
             oldInteraction.setContext(newInteraction.getContext());
+            oldInteraction.setUpdateDate(new Date());
+            interactionRepository.save(oldInteraction);
         }
-        oldInteraction.setUpdateDate(new Date());
         return interactionMapper.interactionToResponse(oldInteraction);
     }
 
@@ -54,13 +56,4 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
         return interactionMapper.interactionToResponse(interaction);
     }
 
-    @Override
-    public InteractionResponse getById(long id) {
-        return interactionMapper.interactionToResponse(interactionRepository.getById(id));
-    }
-
-    @Override
-    public List<InteractionResponse> getAll() {
-        return interactionMapper.interactionsToResponses(interactionRepository.getAll());
-    }
 }

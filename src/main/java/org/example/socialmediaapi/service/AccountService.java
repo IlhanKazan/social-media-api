@@ -6,6 +6,4 @@ import org.example.socialmediaapi.entity.Account;
 import java.util.List;
 
 public interface AccountService extends Service<AccountRequest, AccountResponse> {
-    AccountResponse getById(Long id);
-    List<AccountResponse> getAll();
 }

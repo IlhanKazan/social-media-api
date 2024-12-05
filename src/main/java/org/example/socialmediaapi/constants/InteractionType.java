@@ -12,5 +12,7 @@ public enum InteractionType {
         this.value = value;
     }
 
-    public int getValue() { return value; }
+    public int getValue() {
+        return value;
+    }
 }

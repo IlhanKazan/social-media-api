@@ -50,4 +50,9 @@ public class PostController implements Controller<PostRequest, PostResponse>{
         return postManager.getAll();
     }
 
+    @GetMapping("/get-all-comments-of/{id}")
+    public PostResponse getAllCommentsOf(@PathVariable Long id){
+        return postManager.getAllCommentsOfPost(id);
+    }
+
 }

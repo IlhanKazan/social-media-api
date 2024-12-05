@@ -33,7 +33,7 @@ public class Interaction extends BaseEntity {
 
     @Column(name = "CONTEXT")
     @NotEmpty
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String context;
 
     @Column(name = "TYPE")
@@ -44,9 +44,8 @@ public class Interaction extends BaseEntity {
     public String getContext() {
         if (type == 0) {
             return context;
-        } else {
-            return null;
+        }else{
+            return "";
         }
     }
-
 }
