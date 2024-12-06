@@ -14,5 +14,6 @@ public interface PostMapper {
     @Mapping(source = "context", target = "context")
     @Mapping(source = "interactions", target = "interactions")
     PostResponse postToResponse(Post post);
+    Post responseToPost(PostResponse postResponse);
     List<PostResponse> postsToResponses(List<Post> posts);
 }

@@ -9,6 +9,7 @@ import org.example.socialmediaapi.entity.Post;
 import org.example.socialmediaapi.mappers.PostMapper;
 import org.example.socialmediaapi.repository.InteractionRepository;
 import org.example.socialmediaapi.repository.PostRepository;
+import org.example.socialmediaapi.service.InteractionService;
 import org.example.socialmediaapi.service.PostService;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,17 +18,14 @@ import java.util.List;
 public class PostManager {
 
     private final PostService postService;
-    private final PostRepository postRepository;
-    private final InteractionManager interactionManager;
+    private final InteractionService interactionService;
     private final PostMapper postMapper;
-    private final InteractionRepository interactionRepository;
 
-    public PostManager(PostService postService, PostRepository postRepository, InteractionManager interactionManager, PostMapper postMapper, InteractionRepository interactionRepository) {
+
+    public PostManager(PostService postService, InteractionService interactionService, PostMapper postMapper) {
         this.postService = postService;
-        this.postRepository = postRepository;
-        this.interactionManager = interactionManager;
+        this.interactionService = interactionService;
         this.postMapper = postMapper;
-        this.interactionRepository = interactionRepository;
     }
 
     public PostResponse save(PostRequest postRequest) {
@@ -39,26 +37,26 @@ public class PostManager {
     }
 
     public PostResponse delete(Long id) {
-        Post post = postRepository.getById(id);
+        Post post = postMapper.responseToPost(postService.getById(id));
         if (!post.getInteractions().isEmpty()) {
             for (Interaction interaction : post.getInteractions()) {
-                interactionManager.delete(Long.valueOf(interaction.getInteractionId()));
+                interactionService.delete(Long.valueOf(interaction.getInteractionId()));
             }
         }
         return postService.delete(id);
     }
 
     public PostResponse getById(Long id) {
-        return postMapper.postToResponse(postRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
+        return postService.getById(id);
     }
 
     public List<PostResponse> getAll() {
-        return postMapper.postsToResponses(postRepository.findAllByStatus(Status.ACTIVE.getValue()));
+        return postService.getAll();
     }
 
     public PostResponse getAllCommentsOfPost(Long postId) {
-        Post post = postRepository.getById(postId);
-        post.setInteractions(interactionRepository.findAllByPostIdAndType(post.getPostId(), InteractionType.COMMENT.getValue()));
+        Post post = postMapper.responseToPost(postService.getById(postId));
+        post.setInteractions(interactionService.getAllByPostIdAndType(post.getPostId(), InteractionType.COMMENT.getValue()));
         return postMapper.postToResponse(post);
     }
 

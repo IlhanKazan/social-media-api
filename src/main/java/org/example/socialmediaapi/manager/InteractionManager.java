@@ -15,12 +15,10 @@ public class InteractionManager {
 
     private final InteractionService interactionService;
     private final InteractionMapper interactionMapper;
-    private final InteractionRepository interactionRepository;
 
-    public InteractionManager(InteractionService interactionService, InteractionMapper interactionMapper, InteractionRepository interactionRepository) {
+    public InteractionManager(InteractionService interactionService, InteractionMapper interactionMapper) {
         this.interactionService = interactionService;
         this.interactionMapper = interactionMapper;
-        this.interactionRepository = interactionRepository;
     }
 
     public InteractionResponse save(InteractionRequest request) {
@@ -36,15 +34,15 @@ public class InteractionManager {
     }
 
     public InteractionResponse getById(Long id) {
-        return interactionMapper.interactionToResponse(interactionRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
+        return interactionService.getById(id);
     }
 
     public List<InteractionResponse> getAll() {
-        return interactionMapper.interactionsToResponses(interactionRepository.findAllByStatus(Status.ACTIVE.getValue()));
+        return interactionService.getAll();
     }
 
     public List<InteractionResponse> getByType(int type) {
-        return interactionMapper.interactionsToResponses(interactionRepository.findAllByType(type));
+        return interactionService.getByType(type);
     }
 
 }

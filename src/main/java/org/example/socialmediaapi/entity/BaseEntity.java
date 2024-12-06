@@ -1,5 +1,6 @@
 package org.example.socialmediaapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -18,11 +19,12 @@ import java.util.Date;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
+@JsonFilter("statusFilter")
 public abstract class BaseEntity {
 
     @Column(name = "STATUS", nullable = false, columnDefinition = "INT DEFAULT 1")
     @NotNull
-//    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public int status;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,9 +37,9 @@ public abstract class BaseEntity {
     @UpdateTimestamp
     public Date updateDate;
 
-    /*@JsonGetter("status")
+    @JsonGetter("status")
     public int getStatus() {
         return status == 1 ? Status.ACTIVE.getValue() : Status.INACTIVE.getValue();
-    }*/
+    }
 
 }

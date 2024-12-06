@@ -58,4 +58,18 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(account);
     }
 
+    @Override
+    public AccountResponse getById(Long id) {
+        return accountMapper.accountToResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
+    }
+
+    @Override
+    public List<AccountResponse> getAll() {
+        return accountMapper.accountsToResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
+    }
+
+    @Override
+    public AccountResponse getByUsername(String username) {
+        return accountMapper.accountToResponse(accountRepository.findByUsernameAndStatus(username, Status.ACTIVE.getValue()));
+    }
 }

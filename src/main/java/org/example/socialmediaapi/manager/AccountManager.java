@@ -9,6 +9,8 @@ import org.example.socialmediaapi.entity.Post;
 import org.example.socialmediaapi.mappers.AccountMapper;
 import org.example.socialmediaapi.repository.AccountRepository;
 import org.example.socialmediaapi.service.AccountService;
+import org.example.socialmediaapi.service.InteractionService;
+import org.example.socialmediaapi.service.PostService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,17 +18,15 @@ import java.util.List;
 public class AccountManager {
 
     private final AccountService accountService;
-    private final AccountRepository accountRepository;
-    private final PostManager postManager;
-    private final InteractionManager interactionManager;
     private final AccountMapper accountMapper;
+    private final PostService postService;
+    private final InteractionService interactionService;
 
-    public AccountManager(AccountService accountService, AccountRepository accountRepository, PostManager postManager, InteractionManager interactionManager, AccountMapper accountMapper) {
+    public AccountManager(AccountService accountService, AccountMapper accountMapper, PostService postService, InteractionService interactionService) {
         this.accountService = accountService;
-        this.accountRepository = accountRepository;
-        this.postManager = postManager;
-        this.interactionManager = interactionManager;
         this.accountMapper = accountMapper;
+        this.postService = postService;
+        this.interactionService = interactionService;
     }
 
     public AccountResponse save(AccountRequest accountRequest) {
@@ -38,29 +38,34 @@ public class AccountManager {
     }
 
     public AccountResponse delete(long id) {
-        Account account = accountRepository.getById(id);
+        Account account = accountMapper.responseToAccount(accountService.getById(id));
         for (Post post : account.getPosts()) {
             if (post != null) {
-                postManager.delete(Long.valueOf(post.getPostId()));
+                postService.delete(Long.valueOf(post.getPostId()));
+            }
+            for (Interaction interaction : post.getInteractions()) {
+                if (interaction != null) {
+                    interactionService.delete(Long.valueOf(interaction.getInteractionId()));
+                }
             }
         }
         for (Interaction interaction : account.getInteractions()) {
             if (interaction != null) {
-                interactionManager.delete(Long.valueOf(interaction.getInteractionId()));
+                interactionService.delete(Long.valueOf(interaction.getInteractionId()));
             }
         }
         return accountService.delete(id);
     }
 
     public AccountResponse getById(Long id) {
-        return accountMapper.accountToResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
+        return accountService.getById(id);
     }
 
     public List<AccountResponse> getAll(){
-        return accountMapper.accountsToResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
+        return accountService.getAll();
     }
 
     public AccountResponse getByUsername(String username) {
-        return accountMapper.accountToResponse(accountRepository.findByUsername(username));
+        return accountService.getByUsername(username);
     }
 }

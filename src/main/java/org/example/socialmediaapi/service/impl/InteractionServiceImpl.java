@@ -52,8 +52,31 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
     public InteractionResponse delete(Long id) {
         Interaction interaction = interactionRepository.getById(id);
         interaction.setStatus(0);
+        interaction.setUpdateDate(new Date());
         interactionRepository.save(interaction);
         return interactionMapper.interactionToResponse(interaction);
     }
 
+    @Override
+    public InteractionResponse getById(Long id) {
+        Interaction interaction = interactionRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue());
+        return interactionMapper.interactionToResponse(interaction);
+    }
+
+    @Override
+    public List<InteractionResponse> getAll() {
+        List<Interaction> interactions = interactionRepository.findAllByStatus(Status.ACTIVE.getValue());
+        return interactionMapper.interactionsToResponses(interactions);
+    }
+
+    @Override
+    public List<InteractionResponse> getByType(int type) {
+        List<Interaction> interactions = interactionRepository.findAllByType(type);
+        return interactionMapper.interactionsToResponses(interactions);
+    }
+
+    @Override
+    public List<Interaction> getAllByPostIdAndType(int postId, int type) {
+        return interactionRepository.findAllByPostIdAndType(postId, type);
+    }
 }

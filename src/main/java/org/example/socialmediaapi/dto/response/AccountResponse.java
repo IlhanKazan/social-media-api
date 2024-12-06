@@ -1,5 +1,6 @@
 package org.example.socialmediaapi.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.example.socialmediaapi.entity.Interaction;
 import org.example.socialmediaapi.entity.Post;
@@ -21,5 +22,6 @@ public class AccountResponse extends Response {
     private Date createDate;
     private Date updateDate;
     private List<Post> posts;
+//    @JsonIgnore
     private List<Interaction> interactions;
 }
