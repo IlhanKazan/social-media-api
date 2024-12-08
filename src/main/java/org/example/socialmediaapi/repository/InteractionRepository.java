@@ -13,4 +13,6 @@ public interface InteractionRepository extends JpaRepository<Interaction, Long> 
     Interaction findByAccountIdAndStatus(Long id, int status);
     List<Interaction> findAllByType(int type);
     List<Interaction> findAllByPostIdAndType(int postId, int type);
+    Interaction findByAccountIdAndPostIdAndTypeAndStatus(int accountId, int postId, int type, int status);
+    Interaction findByAccountIdAndPostIdAndStatus(int accountId, int postId, int status);
 }

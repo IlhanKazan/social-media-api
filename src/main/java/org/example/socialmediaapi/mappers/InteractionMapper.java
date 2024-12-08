@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface InteractionMapper {
     Interaction requestToInteraction(InteractionRequest interactionRequest);
+    InteractionRequest interactionToRequest(Interaction interaction);
     @Mapping(source = "interactionId", target = "interactionId")
     @Mapping(source = "accountId", target = "accountId")
     @Mapping(source = "postId", target = "postId")

@@ -1,14 +1,11 @@
 package org.example.socialmediaapi.manager;
 
 import org.example.socialmediaapi.constants.InteractionType;
-import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.PostRequest;
 import org.example.socialmediaapi.dto.response.PostResponse;
 import org.example.socialmediaapi.entity.Interaction;
 import org.example.socialmediaapi.entity.Post;
 import org.example.socialmediaapi.mappers.PostMapper;
-import org.example.socialmediaapi.repository.InteractionRepository;
-import org.example.socialmediaapi.repository.PostRepository;
 import org.example.socialmediaapi.service.InteractionService;
 import org.example.socialmediaapi.service.PostService;
 import org.springframework.stereotype.Service;

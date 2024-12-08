@@ -1,5 +1,6 @@
 package org.example.socialmediaapi.service.impl;
 
+import org.example.socialmediaapi.constants.InteractionType;
 import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
@@ -28,10 +29,30 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
     @Transactional
     public InteractionResponse save(InteractionRequest request) {
         Interaction interaction = interactionMapper.requestToInteraction(request);
-        interaction.setStatus(1);
-        interaction.setCreateDate(new Date());
-        interactionRepository.save(interaction);
-        return interactionMapper.interactionToResponse(interaction);
+        Interaction oldLike = interactionRepository.findByAccountIdAndPostIdAndTypeAndStatus(interaction.getAccountId(), interaction.getPostId(), InteractionType.LIKE.getValue(), Status.ACTIVE.getValue());
+        Interaction oldDislike = interactionRepository.findByAccountIdAndPostIdAndTypeAndStatus(interaction.getAccountId(), interaction.getPostId(), InteractionType.DISLIKE.getValue(), Status.ACTIVE.getValue());
+        boolean checkBool = true;
+        if (oldLike != null && interaction.getType() == InteractionType.LIKE.getValue()){
+            checkBool = false;
+        }
+        if (oldDislike != null && interaction.getType() == InteractionType.DISLIKE.getValue()){
+            checkBool = false;
+        }
+        if (oldLike != null && interaction.getType() == InteractionType.DISLIKE.getValue()) {
+            delete(Long.valueOf(oldLike.getInteractionId()));
+        }
+        if (oldDislike != null && interaction.getType() == InteractionType.LIKE.getValue()){
+            delete(Long.valueOf(oldDislike.getInteractionId()));
+        }
+        if (checkBool){
+            interaction.setStatus(1);
+            interaction.setCreateDate(new Date());
+            interactionRepository.save(interaction);
+            return interactionMapper.interactionToResponse(interaction);
+        }
+        else{
+            return null;
+        }
     }
 
     @Override

@@ -1,13 +1,11 @@
 package org.example.socialmediaapi.manager;
 
-import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
 import org.example.socialmediaapi.entity.Account;
 import org.example.socialmediaapi.entity.Interaction;
 import org.example.socialmediaapi.entity.Post;
 import org.example.socialmediaapi.mappers.AccountMapper;
-import org.example.socialmediaapi.repository.AccountRepository;
 import org.example.socialmediaapi.service.AccountService;
 import org.example.socialmediaapi.service.InteractionService;
 import org.example.socialmediaapi.service.PostService;
