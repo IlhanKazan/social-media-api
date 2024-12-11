@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
+import org.hibernate.annotations.Where;
+
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -39,9 +41,11 @@ public class Account extends BaseEntity {
     private String phone;
 
     @OneToMany(mappedBy = "accountId")
+    @Where(clause = "STATUS = 1")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "accountId")
+    @Where(clause = "STATUS = 1")
     private List<Interaction> interactions;
 
 }

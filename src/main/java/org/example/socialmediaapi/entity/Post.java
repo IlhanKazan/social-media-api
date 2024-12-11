@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class Post extends BaseEntity {
     private String context;
 
     @OneToMany(mappedBy = "postId")
+    @Where(clause = "STATUS = 1")
     private List<Interaction> interactions;
 
 
