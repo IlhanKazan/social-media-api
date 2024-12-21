@@ -1,6 +1,5 @@
 package org.example.socialmediaapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -19,7 +18,6 @@ import java.util.Date;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-@JsonFilter("statusFilter")
 public abstract class BaseEntity {
 
     @Column(name = "STATUS", nullable = false, columnDefinition = "INT DEFAULT 1")

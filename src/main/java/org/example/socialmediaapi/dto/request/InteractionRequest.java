@@ -3,6 +3,7 @@ package org.example.socialmediaapi.dto.request;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.example.socialmediaapi.entity.Account;
 
 @Getter
 @Setter
@@ -11,7 +12,6 @@ import lombok.*;
 @ToString
 public class InteractionRequest extends Request {
 
-    @NotNull
     private int accountId;
 
     @NotNull
@@ -22,5 +22,8 @@ public class InteractionRequest extends Request {
 
     @NotNull
     private int type;
+
+    private Account account;
+
 
 }

@@ -80,7 +80,7 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
 
     @Override
     public InteractionResponse getById(Long id) {
-        Interaction interaction = interactionRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue());
+        Interaction interaction = interactionRepository.findByAccount_AccountIdAndStatus(id, Status.ACTIVE.getValue());
         return interactionMapper.interactionToResponse(interaction);
     }
 
@@ -98,6 +98,6 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
 
     @Override
     public List<Interaction> getAllByPostIdAndType(int postId, int type) {
-        return interactionRepository.findAllByPostIdAndType(postId, type);
+        return interactionRepository.findAllByPost_PostIdAndType(postId, type);
     }
 }

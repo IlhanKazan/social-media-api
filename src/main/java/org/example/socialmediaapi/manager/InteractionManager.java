@@ -1,13 +1,14 @@
 package org.example.socialmediaapi.manager;
 
-import org.example.socialmediaapi.constants.Status;
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
+import org.example.socialmediaapi.entity.Account;
+import org.example.socialmediaapi.mappers.AccountMapper;
 import org.example.socialmediaapi.mappers.InteractionMapper;
-import org.example.socialmediaapi.repository.InteractionRepository;
+import org.example.socialmediaapi.security.JwtTokenProvider;
 import org.example.socialmediaapi.service.InteractionService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -15,14 +16,25 @@ public class InteractionManager {
 
     private final InteractionService interactionService;
     private final InteractionMapper interactionMapper;
+    private final AccountManager accountManager;
+    private final AccountMapper accountMapper;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public InteractionManager(InteractionService interactionService, InteractionMapper interactionMapper) {
+    public InteractionManager(InteractionService interactionService, InteractionMapper interactionMapper, AccountManager accountManager, AccountMapper accountMapper, JwtTokenProvider jwtTokenProvider) {
         this.interactionService = interactionService;
         this.interactionMapper = interactionMapper;
+        this.accountManager = accountManager;
+        this.accountMapper = accountMapper;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public InteractionResponse save(InteractionRequest request) {
-        return interactionService.save(request);
+    public InteractionResponse save(InteractionRequest interactionRequest, HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("Authorization").substring(7);
+        int accountIdFromToken = jwtTokenProvider.getAccountIdFromToken(token);
+        Account account = accountMapper.responseToAccount(accountManager.getById((long) accountIdFromToken));
+        interactionRequest.setAccount(account);
+        interactionRequest.setAccountId(account.getAccountId());
+        return interactionService.save(interactionRequest);
     }
 
     public InteractionResponse update(Long id, InteractionRequest request) {

@@ -2,6 +2,7 @@ package org.example.socialmediaapi.manager;
 
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
+import org.example.socialmediaapi.dto.response.WebAccountResponse;
 import org.example.socialmediaapi.entity.Account;
 import org.example.socialmediaapi.entity.Interaction;
 import org.example.socialmediaapi.entity.Post;
@@ -59,11 +60,24 @@ public class AccountManager {
         return accountService.getById(id);
     }
 
-    public List<AccountResponse> getAll(){
+    public List<WebAccountResponse> getAll(){
         return accountService.getAll();
+    }
+
+    public List<AccountResponse> adminGetAll() {
+        return accountService.adminGetAll();
     }
 
     public AccountResponse getByUsername(String username) {
         return accountService.getByUsername(username);
     }
+
+    public boolean validateCredentials(String username, String password) {
+        return accountService.validateCredentials(username, password);
+    }
+
+    public AccountResponse loadUserByUsername(String username){
+        return accountService.loadUserByUsername(username);
+    }
+
 }

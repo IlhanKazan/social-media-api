@@ -1,9 +1,8 @@
 package org.example.socialmediaapi.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-
-import javax.validation.constraints.NotEmpty;
+import org.example.socialmediaapi.entity.Account;
 
 @Getter
 @Setter
@@ -12,7 +11,8 @@ import javax.validation.constraints.NotEmpty;
 @ToString
 public class PostRequest extends Request{
 
-    @NotNull
+    private Account account;
+
     private int accountId;
 
     @NotEmpty

@@ -6,6 +6,7 @@ import org.example.socialmediaapi.dto.response.InteractionResponse;
 import org.example.socialmediaapi.manager.InteractionManager;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class InteractionController implements Controller<InteractionRequest, Int
     @Override
     @Validated
     @PostMapping("/save")
-    public InteractionResponse save(@Valid @RequestBody InteractionRequest request) {
-        return interactionManager.save(request);
+    public InteractionResponse save(@Valid @RequestBody InteractionRequest request, HttpServletRequest httpServletRequest) {
+        return interactionManager.save(request, httpServletRequest);
     }
 
     @Override

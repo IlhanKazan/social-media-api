@@ -1,21 +1,20 @@
 package org.example.socialmediaapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.annotations.Where;
-
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "ACCOUNTS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Account extends BaseEntity {
 
     @Id
@@ -27,7 +26,7 @@ public class Account extends BaseEntity {
     @NotEmpty
     private String username;
 
-    @Column(name = "PASSWORD", length = 15)
+    @Column(name = "PASSWORD", length = 100)
     @NotEmpty
     private String password;
 
@@ -40,12 +39,21 @@ public class Account extends BaseEntity {
     @NotEmpty
     private String phone;
 
-    @OneToMany(mappedBy = "accountId")
+    @Column(name = "ROLEID")
+    private int roleId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ROLEID", nullable = false, insertable = false, updatable = false)
+    private Role role;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Where(clause = "STATUS = 1")
+    @JsonIgnoreProperties({"account", "interactions"})
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "accountId")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Where(clause = "STATUS = 1")
+    @JsonIgnoreProperties({"account", "post"})
     private List<Interaction> interactions;
 
 }

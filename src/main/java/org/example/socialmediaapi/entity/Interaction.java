@@ -1,7 +1,6 @@
 package org.example.socialmediaapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -11,9 +10,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "INTERACTIONS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Interaction extends BaseEntity {
 
     @Id
@@ -21,15 +20,25 @@ public class Interaction extends BaseEntity {
     @Column(name = "INTERACTIONID", unique = true, nullable = false)
     private int interactionId;
 
-    @Column(name = "ACCOUNTID")
-    @NotNull
-    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
-    private int accountId;
-
     @Column(name = "POSTID")
     @NotNull
-    @JoinColumn(name = "postId", referencedColumnName = "postId")
     private int postId;
+
+    @Column(name = "ACCOUNTID")
+    @NotNull
+    private int accountId;
+
+    private String accountUsername;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ACCOUNTID", nullable = false, referencedColumnName = "ACCOUNTID", insertable = false, updatable = false)
+    @JsonIgnore
+    private Account account;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "POSTID", nullable = false, referencedColumnName = "POSTID", insertable = false, updatable = false)
+    @JsonIgnore
+    private Post post;
 
     @Column(name = "CONTEXT")
     @NotEmpty
@@ -44,8 +53,14 @@ public class Interaction extends BaseEntity {
     public String getContext() {
         if (type == 0) {
             return context;
-        }else{
+        } else {
             return "";
         }
     }
+
+    @JsonGetter("accountUsername")
+    public String getAccountUsername() {
+       return account.getUsername();
+    }
+
 }
