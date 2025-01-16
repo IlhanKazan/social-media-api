@@ -21,4 +21,3 @@ in short, it will have the features expected from a social media platform.
 
 ### How to access endpoints 
 > ### `/{controller}/{operation}` 
-

@@ -1,6 +1,5 @@
 package org.example.socialmediaapi.service;
 
-import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
 import org.example.socialmediaapi.entity.Interaction;

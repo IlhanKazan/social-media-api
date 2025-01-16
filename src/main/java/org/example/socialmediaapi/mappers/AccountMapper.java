@@ -2,6 +2,7 @@ package org.example.socialmediaapi.mappers;
 
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
+import org.example.socialmediaapi.dto.response.WebAccountResponse;
 import org.example.socialmediaapi.entity.Account;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,7 +16,15 @@ public interface AccountMapper {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "interactions", target = "interactions")
+    @Mapping(source = "role", target = "role")
     AccountResponse accountToResponse(Account account);
     Account responseToAccount(AccountResponse accountResponse);
     List<AccountResponse> accountsToResponses(List<Account> accounts);
+
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "posts", target = "posts")
+    @Mapping(source = "interactions", target = "interactions")
+    WebAccountResponse AccountToWebAccountResponse(Account account);
+    List<WebAccountResponse> accountsToWebAccountResponses(List<Account> accounts);
+
 }

@@ -3,11 +3,11 @@ package org.example.socialmediaapi.controller;
 import jakarta.validation.Valid;
 import org.example.socialmediaapi.dto.request.PostRequest;
 import org.example.socialmediaapi.dto.response.PostResponse;
-import org.example.socialmediaapi.entity.Post;
 import org.example.socialmediaapi.manager.PostManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -23,8 +23,8 @@ public class PostController implements Controller<PostRequest, PostResponse>{
     @Override
     @Validated
     @PostMapping("/save")
-    public PostResponse save(@Valid @RequestBody PostRequest postRequest) {
-        return postManager.save(postRequest);
+    public PostResponse save(@Valid @RequestBody PostRequest postRequest, HttpServletRequest httpServletRequest) {
+        return postManager.save(postRequest, httpServletRequest);
     }
 
     @Override
@@ -45,6 +45,7 @@ public class PostController implements Controller<PostRequest, PostResponse>{
         return postManager.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @GetMapping("/get-all")
     public List<PostResponse> getAll(){
         return postManager.getAll();
