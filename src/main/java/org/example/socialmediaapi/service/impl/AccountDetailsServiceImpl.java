@@ -32,6 +32,8 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
                 account.getUsername(),
                 account.getPassword(),
                 account.getAccountId(),
+                account.getPhone(),
+                account.getEmail(),
                 Collections.singletonList(new SimpleGrantedAuthority(account.getRole().getRole()))
         );
     }

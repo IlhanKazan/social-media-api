@@ -3,6 +3,7 @@ package org.example.socialmediaapi.controller;
 import jakarta.validation.Valid;
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
+import org.example.socialmediaapi.dto.response.AdminAccountResponse;
 import org.example.socialmediaapi.dto.response.WebAccountResponse;
 import org.example.socialmediaapi.manager.AccountManager;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,7 @@ public class AccountController implements Controller<AccountRequest, AccountResp
 
     @Override
     @Validated
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @PostMapping("/save")
     public AccountResponse save(@Valid @RequestBody AccountRequest request, HttpServletRequest httpServletRequest) {
         return accountManager.save(request);
@@ -31,21 +33,37 @@ public class AccountController implements Controller<AccountRequest, AccountResp
 
     @Override
     @Validated
-    @PostMapping("/update/{id}")
-    public AccountResponse update(@PathVariable Long id, @Valid @RequestBody AccountRequest newInfo) {
-        return accountManager.update(id, newInfo);
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @PostMapping("/update")
+    public AccountResponse update(@Valid @RequestBody AccountRequest newInfo, HttpServletRequest httpServletRequest) {
+        return accountManager.update(newInfo, httpServletRequest);
     }
 
     @Override
-    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin-delete/{id}")
     public AccountResponse delete(@PathVariable Long id) {
         return accountManager.delete(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/delete")
+    public AccountResponse userDelete(HttpServletRequest httpServletRequest) {
+        return accountManager.userDelete(httpServletRequest);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/get-by-id/{id}")
     public AccountResponse getById(@PathVariable Long id) {
         return accountManager.getById(id);
     }
+
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @GetMapping("/web-get-by-id/{id}")
+    public WebAccountResponse webGetById(@PathVariable Long id) {
+        return accountManager.webGetById(id);
+    }
+
 
     @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @GetMapping( "/get-all")
@@ -53,15 +71,28 @@ public class AccountController implements Controller<AccountRequest, AccountResp
         return accountManager.getAll();
     }
 
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @GetMapping("/get-by-username/{username}")
+    public WebAccountResponse getByUsername(@PathVariable String username) {
+        return accountManager.getByUsername(username);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping( "/admin-get-all")
-    public List<AccountResponse> adminGetAll() {
+    public List<AdminAccountResponse> adminGetAll() {
         return accountManager.adminGetAll();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/get-by-username/{username}")
-    public AccountResponse getByUsername(@PathVariable String username) {
-        return accountManager.getByUsername(username);
+    @GetMapping( "/admin-get-by-username/{username}")
+    public AdminAccountResponse adminGetByUsername(@PathVariable String username) {
+        return accountManager.adminGetByUsername(username);
     }
+
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @GetMapping( "/change-password")
+    public AdminAccountResponse changePassword(HttpServletRequest httpServletRequest) {
+        return accountManager.changePassword(httpServletRequest);
+    }
+
 }

@@ -57,8 +57,8 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
 
     @Override
     @Transactional
-    public InteractionResponse update(Long id, InteractionRequest newInfo) {
-        Interaction oldInteraction = interactionRepository.getById(id);
+    public InteractionResponse update(InteractionRequest newInfo) {
+        Interaction oldInteraction = interactionRepository.getById(Long.valueOf(newInfo.getInteractionId()));
         Interaction newInteraction = interactionMapper.requestToInteraction(newInfo);
         if(oldInteraction.getType() == 0) {
             oldInteraction.setContext(newInteraction.getContext());
@@ -80,7 +80,7 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
 
     @Override
     public InteractionResponse getById(Long id) {
-        Interaction interaction = interactionRepository.findByAccount_AccountIdAndStatus(id, Status.ACTIVE.getValue());
+        Interaction interaction = interactionRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue());
         return interactionMapper.interactionToResponse(interaction);
     }
 

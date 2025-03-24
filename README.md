@@ -1,18 +1,23 @@
-Java Spring Boot ile geliştirdiğim sosyal medya api uygulamam henüz geliştirme aşamasında olup zamanla tamamlayacağım bir projedir. 
+### My social media application that I developed with Java Spring Boot is still in the development phase and is a project that I will complete over time.
 
-Projede; 
-- profil oluşturma/silme
-- gönderi oluşturma/silme
-- yorum 
-- beğeni 
-- beğenmeme 
-gibi etkileşimler olacak yani kısacası bir sosyal medya mecrasından beklenen özellikler bulunacaktır.
+#### The project will include;
+- Profile creation/deletion
+- Post creation/deletion
+- Comment
+- Like
+- Dislike
+  in short, it will have the features expected from a social media platform.
 
-Kullanılan Teknolojiler:
+#### Technologies Used:
 - Java
 - Spring Boot
+- Spring Security
+- JWT
 - H2 Database
 - Hibernate
 - JPA
 - Lombok
-- Mapstruct 
+- Mapstruct
+
+### How to access endpoints
+> ### `/{controller}/{operation}` 

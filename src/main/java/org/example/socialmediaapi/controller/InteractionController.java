@@ -4,6 +4,7 @@ import org.example.socialmediaapi.constants.InteractionType;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
 import org.example.socialmediaapi.manager.InteractionManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ public class InteractionController implements Controller<InteractionRequest, Int
         this.interactionManager = interactionManager;
     }
 
+
     @Override
     @Validated
     @PostMapping("/save")
@@ -29,9 +31,9 @@ public class InteractionController implements Controller<InteractionRequest, Int
 
     @Override
     @Validated
-    @PostMapping("/update/{id}")
-    public InteractionResponse update(@PathVariable Long id, @Valid @RequestBody InteractionRequest newInfo) {
-        return interactionManager.update(id, newInfo);
+    @PostMapping("/update")
+    public InteractionResponse update(@Valid @RequestBody InteractionRequest newInfo, HttpServletRequest httpServletRequest) {
+        return interactionManager.update(newInfo, httpServletRequest);
     }
 
     @Override

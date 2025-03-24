@@ -3,9 +3,9 @@ package org.example.socialmediaapi.service.impl;
 import org.example.socialmediaapi.constants.Status;
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
+import org.example.socialmediaapi.dto.response.AdminAccountResponse;
 import org.example.socialmediaapi.dto.response.WebAccountResponse;
 import org.example.socialmediaapi.entity.Account;
-import org.example.socialmediaapi.entity.Role;
 import org.example.socialmediaapi.mappers.AccountMapper;
 import org.example.socialmediaapi.repository.AccountRepository;
 import org.example.socialmediaapi.service.AbstractService;
@@ -44,15 +44,21 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
 
     @Override
     @Transactional
-    public AccountResponse update(Long id, AccountRequest newInfo) {
-        Account oldAccount = accountRepository.getById(id);
+    public AccountResponse update(AccountRequest newInfo) {
+        Account oldAccount = accountRepository.findByAccountIdAndStatus(Long.valueOf(newInfo.getAccountId()), Status.ACTIVE.getValue());
         Account newAccount = accountMapper.requestToAccount(newInfo);
         oldAccount.setUsername(newAccount.getUsername());
-        oldAccount.setPassword(newAccount.getPassword());
+        if (oldAccount.getPassword().equals(newAccount.getPassword())) {
+            oldAccount.setPassword(newAccount.getPassword());
+        }
+        else{
+            oldAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
+        }
         oldAccount.setEmail(newAccount.getEmail());
         oldAccount.setPhone(newAccount.getPhone());
         oldAccount.setUpdateDate(new Date());
         accountRepository.save(oldAccount);
+        System.out.println(newAccount.getPassword());
         return accountMapper.accountToResponse(oldAccount);
     }
 
@@ -66,9 +72,23 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(account);
     }
 
+    @Transactional
+    public AccountResponse userDelete(Long id) {
+        Account account = accountRepository.getById(id);
+        account.setStatus(0);
+        account.setUpdateDate(new Date());
+        accountRepository.save(account);
+        return accountMapper.accountToResponse(account);
+    }
+
     @Override
     public AccountResponse getById(Long id) {
         return accountMapper.accountToResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
+    }
+
+    @Override
+    public WebAccountResponse webGetById(Long id) {
+        return accountMapper.accountToWebAccountResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
     @Override
@@ -77,23 +97,33 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
     }
 
     @Override
-    public List<AccountResponse> adminGetAll() {
-        return accountMapper.accountsToResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
+    public List<AdminAccountResponse> adminGetAll() {
+        return accountMapper.accountsToAdminAccountResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
     }
 
     @Override
-    public AccountResponse getByUsername(String username) {
-        return accountMapper.accountToResponse(accountRepository.findByUsernameAndStatus(username, Status.ACTIVE.getValue()));
+    public WebAccountResponse getByUsername(String username) {
+        return accountMapper.accountToWebAccountResponse(accountRepository.findByUsernameAndStatus(username, Status.ACTIVE.getValue()));
+    }
+
+    @Override
+    public AdminAccountResponse adminGetByUsername(String username) {
+        return accountMapper.accountToAdminAccountResponse(accountRepository.findByUsernameAndStatus(username, Status.ACTIVE.getValue()));
+    }
+
+    @Override
+    public AdminAccountResponse changePassword(Long id) {
+        return accountMapper.accountToAdminAccountResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
     @Override
     public boolean validateCredentials(String username, String password) {
-        AccountResponse accountResponse = loadUserByUsername(username);
-        return passwordEncoder.matches(password, accountResponse.getPassword());
+        AdminAccountResponse adminAccountResponse = loadUserByUsername(username);
+        return passwordEncoder.matches(password, adminAccountResponse.getPassword());
     }
 
-    public AccountResponse loadUserByUsername(String username) {
-        AccountResponse response = getByUsername(username);
+    public AdminAccountResponse loadUserByUsername(String username) {
+        AdminAccountResponse response = adminGetByUsername(username);
         if (response == null) {
             throw new UsernameNotFoundException("User not found");
         }

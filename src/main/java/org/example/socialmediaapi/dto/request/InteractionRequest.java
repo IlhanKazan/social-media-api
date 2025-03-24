@@ -14,6 +14,8 @@ public class InteractionRequest extends Request {
 
     private int accountId;
 
+    private int interactionId;
+
     @NotNull
     private int postId;
 

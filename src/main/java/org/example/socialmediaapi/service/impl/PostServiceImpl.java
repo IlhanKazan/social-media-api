@@ -36,8 +36,8 @@ public class PostServiceImpl extends AbstractService implements PostService {
 
     @Override
     @Transactional
-    public PostResponse update(Long id, PostRequest newInfo) {
-        Post oldPost = postRepository.getById(id);
+    public PostResponse update(PostRequest newInfo) {
+        Post oldPost = postRepository.getById(Long.valueOf(newInfo.getPostId()));
         Post newPost = postMapper.requestToPost(newInfo);
         oldPost.setContext(newPost.getContext());
         postRepository.save(oldPost);
@@ -56,7 +56,7 @@ public class PostServiceImpl extends AbstractService implements PostService {
 
     @Override
     public PostResponse getById(Long id) {
-        Post post = postRepository.findByAccount_AccountIdAndStatus(id, Status.ACTIVE.getValue());
+        Post post = postRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue());
         return postMapper.postToResponse(post);
     }
 

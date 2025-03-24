@@ -9,7 +9,6 @@ import org.example.socialmediaapi.entity.Post;
 import org.example.socialmediaapi.mappers.AccountMapper;
 import org.example.socialmediaapi.mappers.PostMapper;
 import org.example.socialmediaapi.security.JwtTokenProvider;
-import org.example.socialmediaapi.service.AccountService;
 import org.example.socialmediaapi.service.InteractionService;
 import org.example.socialmediaapi.service.PostService;
 import org.springframework.stereotype.Service;
@@ -45,8 +44,13 @@ public class PostManager {
         return postService.save(postRequest);
     }
 
-    public PostResponse update(Long id, PostRequest postRequest) {
-        return postService.update(id, postRequest);
+    public PostResponse update(PostRequest postRequest, HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("Authorization").substring(7);
+        int accountIdFromToken = jwtTokenProvider.getAccountIdFromToken(token);
+        Account account = accountMapper.responseToAccount(accountManager.getById((long) accountIdFromToken));
+        postRequest.setAccount(account);
+        postRequest.setAccountId(account.getAccountId());
+        return postService.update(postRequest);
     }
 
     public PostResponse delete(Long id) {

@@ -1,67 +1,51 @@
-/*
-ALTER TABLE SOCIAL_MEDIA_API.ACCOUNTS DROP CONSTRAINT ACCOUNT_ROLEID;
-DROP TABLE IF EXISTS SOCIAL_MEDIA_API.ROLES;
-DROP TABLE IF EXISTS SOCIAL_MEDIA_API.INTERACTIONS;
-DROP TABLE IF EXISTS SOCIAL_MEDIA_API.POSTS;
-DROP TABLE IF EXISTS SOCIAL_MEDIA_API.ACCOUNTS;
-DROP SCHEMA IF EXISTS SOCIAL_MEDIA_API;
+-- Tüm şemayı ve bağımlı tabloları CASCADE ile sil (en güvenli yöntem)
+DROP SCHEMA IF EXISTS public CASCADE;
 
-CREATE SCHEMA SOCIAL_MEDIA_API;
+-- Şemayı yeniden oluştur
+CREATE SCHEMA public;
 
-
-CREATE TABLE SOCIAL_MEDIA_API.ROLES (
-                                        ROLEID INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
-                                        role VARCHAR(15) NOT NULL
+-- ROLES tablosu (PostgreSQL için SERIAL kullanımı)
+CREATE TABLE public.ROLES (
+                                        ROLEID SERIAL PRIMARY KEY,
+                                        role VARCHAR(15) NOT NULL UNIQUE
 );
 
-CREATE TABLE SOCIAL_MEDIA_API.ACCOUNTS (
-                                           accountId INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
+-- ACCOUNTS tablosu
+CREATE TABLE public.ACCOUNTS (
+                                           accountId SERIAL PRIMARY KEY,
                                            username VARCHAR(15) NOT NULL UNIQUE,
                                            password VARCHAR(100) NOT NULL,
                                            email VARCHAR(30) NOT NULL UNIQUE,
                                            phone VARCHAR(11) NOT NULL UNIQUE,
                                            status INT NOT NULL DEFAULT 1,
-                                           createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+                                           createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                            updateDate TIMESTAMP,
-                                           ROLEID INT NOT NULL,
-                                           CONSTRAINT ACCOUNT_ROLEID
-                                               FOREIGN KEY (ROLEID)
-                                                    REFERENCES SOCIAL_MEDIA_API.ROLES (ROLEID)
-                                                    ON DELETE CASCADE
-                                                    ON UPDATE CASCADE
+                                           ROLEID INT NOT NULL REFERENCES public.ROLES(ROLEID) ON DELETE CASCADE
 );
 
-CREATE TABLE SOCIAL_MEDIA_API.POSTS (
-                                        postId INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
-                                        accountId INT NOT NULL,
+-- POSTS tablosu
+CREATE TABLE public.POSTS (
+                                        postId SERIAL PRIMARY KEY,
+                                        accountId INT NOT NULL REFERENCES public.ACCOUNTS(accountId) ON DELETE CASCADE,
                                         context VARCHAR(255) NOT NULL,
                                         status INT NOT NULL DEFAULT 1,
-                                        createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-                                        updateDate TIMESTAMP,
-                                        CONSTRAINT post_accountId
-                                            FOREIGN KEY (accountId)
-                                                REFERENCES SOCIAL_MEDIA_API.ACCOUNTS (accountId)
-                                                ON DELETE CASCADE
-                                                ON UPDATE CASCADE
+                                        createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                        updateDate TIMESTAMP
 );
 
-CREATE TABLE SOCIAL_MEDIA_API.INTERACTIONS (
-                                               interactionId INT NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
-                                               accountId INT NOT NULL,
-                                               postId INT NOT NULL,
+-- INTERACTIONS tablosu
+CREATE TABLE public.INTERACTIONS (
+                                               interactionId SERIAL PRIMARY KEY,
+                                               accountId INT NOT NULL REFERENCES public.ACCOUNTS(accountId) ON DELETE CASCADE,
+                                               postId INT NOT NULL REFERENCES public.POSTS(postId) ON DELETE CASCADE,
                                                context VARCHAR(255) NOT NULL,
                                                type INT,
                                                status INT NOT NULL DEFAULT 1,
-                                               createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-                                               updateDate TIMESTAMP,
-                                               CONSTRAINT interaction_accountId
-                                                   FOREIGN KEY (accountId)
-                                                       REFERENCES SOCIAL_MEDIA_API.ACCOUNTS (accountId)
-                                                       ON DELETE CASCADE
-                                                       ON UPDATE CASCADE,
-                                               CONSTRAINT interaction_postId
-                                                   FOREIGN KEY (postId)
-                                                       REFERENCES SOCIAL_MEDIA_API.POSTS (postId)
-                                                       ON DELETE CASCADE
+                                               createDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                               updateDate TIMESTAMP
 );
-*/
+
+-- Indexler (performans için)
+CREATE INDEX idx_accounts_roleid ON public.ACCOUNTS(ROLEID);
+CREATE INDEX idx_posts_accountid ON public.POSTS(accountId);
+CREATE INDEX idx_interactions_postid ON public.INTERACTIONS(postId);

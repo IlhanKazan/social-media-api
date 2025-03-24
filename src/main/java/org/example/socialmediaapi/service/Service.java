@@ -5,6 +5,6 @@ import org.example.socialmediaapi.dto.response.Response;
 
 public interface Service<T extends Request, R extends Response> {
     R save(T request);
-    R update(Long id, T newInfo);
+    R update(T newInfo);
     R delete(Long id);
 }

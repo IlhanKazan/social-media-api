@@ -58,7 +58,7 @@ public class AuthenticationController {
         if (response == null) {
             return ResponseEntity.status(401).body("Already existing user");
         } else {
-            return ResponseEntity.ok("User registered successfully");
+            return ResponseEntity.status(200).body("User registered successfully");
         }
     }
 }

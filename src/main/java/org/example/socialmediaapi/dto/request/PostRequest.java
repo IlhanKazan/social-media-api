@@ -15,6 +15,8 @@ public class PostRequest extends Request{
 
     private int accountId;
 
+    private int postId;
+
     @NotEmpty
     private String context;
 

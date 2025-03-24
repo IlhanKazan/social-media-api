@@ -10,12 +10,16 @@ public class CustomAccountDetails implements UserDetails {
     private final String username;
     private final String password;
     private final int accountId;
+    private final String phone;
+    private final String email;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomAccountDetails(String username, String password, int accountId, Collection<? extends GrantedAuthority> authorities) {
+    public CustomAccountDetails(String username, String password, int accountId, String phone, String email, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.accountId = accountId;
+        this.phone = phone;
+        this.email = email;
         this.authorities = authorities;
     }
 

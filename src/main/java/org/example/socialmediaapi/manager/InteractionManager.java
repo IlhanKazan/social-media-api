@@ -37,8 +37,13 @@ public class InteractionManager {
         return interactionService.save(interactionRequest);
     }
 
-    public InteractionResponse update(Long id, InteractionRequest request) {
-        return interactionService.update(id, request);
+    public InteractionResponse update(InteractionRequest interactionRequest, HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("Authorization").substring(7);
+        int accountIdFromToken = jwtTokenProvider.getAccountIdFromToken(token);
+        Account account = accountMapper.responseToAccount(accountManager.getById((long) accountIdFromToken));
+        interactionRequest.setAccount(account);
+        interactionRequest.setAccountId(account.getAccountId());
+        return interactionService.update(interactionRequest);
     }
 
     public InteractionResponse delete(Long id) {

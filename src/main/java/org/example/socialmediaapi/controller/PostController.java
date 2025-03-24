@@ -22,6 +22,7 @@ public class PostController implements Controller<PostRequest, PostResponse>{
 
     @Override
     @Validated
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @PostMapping("/save")
     public PostResponse save(@Valid @RequestBody PostRequest postRequest, HttpServletRequest httpServletRequest) {
         return postManager.save(postRequest, httpServletRequest);
@@ -29,17 +30,20 @@ public class PostController implements Controller<PostRequest, PostResponse>{
 
     @Override
     @Validated
-    @PostMapping("/update/{id}")
-    public PostResponse update(@PathVariable Long id, @Valid @RequestBody PostRequest newInfo) {
-        return postManager.update(id, newInfo);
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @PostMapping("/update")
+    public PostResponse update(@Valid @RequestBody PostRequest newInfo, HttpServletRequest httpServletRequest) {
+        return postManager.update(newInfo, httpServletRequest);
     }
 
     @Override
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @GetMapping("/delete/{id}")
     public PostResponse delete(@PathVariable Long id) {
         return postManager.delete(id);
     }
 
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @GetMapping("/get-by-id/{id}")
     public PostResponse getById(@PathVariable Long id){
         return postManager.getById(id);
@@ -51,6 +55,7 @@ public class PostController implements Controller<PostRequest, PostResponse>{
         return postManager.getAll();
     }
 
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @GetMapping("/get-all-comments-of/{id}")
     public PostResponse getAllCommentsOf(@PathVariable Long id){
         return postManager.getAllCommentsOfPost(id);
