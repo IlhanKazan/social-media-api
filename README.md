@@ -6,7 +6,7 @@
 - Comment
 - Like
 - Dislike
-  in short, it will have the features expected from a social media platform.
+in short, it will have the features expected from a social media platform.
 
 #### Technologies Used:
 - Java
@@ -19,5 +19,5 @@
 - Lombok
 - Mapstruct
 
-### How to access endpoints
+### How to access endpoints 
 > ### `/{controller}/{operation}` 
