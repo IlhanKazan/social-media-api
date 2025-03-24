@@ -1,11 +1,17 @@
 # Build aşaması
-FROM eclipse-temurin:17-jdk-jammy as builder
-WORKDIR /app
-COPY . .
-RUN ./mvnw clean package -DskipTests
+FROM maven:3.9.6-eclipse-temurin-17 as builder
 
-# Runtime aşaması (hafif)
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+
+# Bağımlılıkları indir ve uygulamayı build et
+RUN mvn clean package -DskipTests
+
+# Runtime aşaması (daha hafif)
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 COPY --from=builder /app/target/social-media-api-*.jar app.jar
+
+EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "app.jar"]
