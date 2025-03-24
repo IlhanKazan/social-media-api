@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-# build.sh
+#!/bin/bash
 
-# Maven kurulumu ve JAR oluşturma
-apt-get update && apt-get install -y maven
-mvn clean package
+# Maven Wrapper ile build al
+./mvnw clean package
