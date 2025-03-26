@@ -1,4 +1,4 @@
-/*DROP SCHEMA IF EXISTS public CASCADE;
+DROP SCHEMA IF EXISTS public CASCADE;
 
 CREATE SCHEMA public;
 
@@ -41,4 +41,4 @@ CREATE TABLE public.INTERACTIONS (
 
 CREATE INDEX idx_accounts_roleid ON public.ACCOUNTS(ROLEID);
 CREATE INDEX idx_posts_accountid ON public.POSTS(accountId);
-CREATE INDEX idx_interactions_postid ON public.INTERACTIONS(postId);*/
+CREATE INDEX idx_interactions_postid ON public.INTERACTIONS(postId);
