@@ -4,7 +4,6 @@ import org.example.socialmediaapi.constants.InteractionType;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
 import org.example.socialmediaapi.manager.InteractionManager;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;

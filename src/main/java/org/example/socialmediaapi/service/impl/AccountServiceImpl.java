@@ -129,4 +129,8 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         }
         return response;
     }
+
+    public String getRole(Long id){
+        return String.valueOf((accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue())).getRole());
+    }
 }

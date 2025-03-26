@@ -56,7 +56,7 @@ public class PostServiceImpl extends AbstractService implements PostService {
 
     @Override
     public PostResponse getById(Long id) {
-        Post post = postRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue());
+        Post post = postRepository.findByPostIdAndStatus(id, Status.ACTIVE.getValue());
         return postMapper.postToResponse(post);
     }
 

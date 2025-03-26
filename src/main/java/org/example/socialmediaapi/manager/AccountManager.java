@@ -133,4 +133,10 @@ public class AccountManager {
         return accountService.loadUserByUsername(username);
     }
 
+    public String getRole(HttpServletRequest httpServletRequest){
+        String token = jwtTokenProvider.resolveToken(httpServletRequest);
+        int accountIdFromToken = jwtTokenProvider.getAccountIdFromToken(token);
+        return accountService.getRole(Long.valueOf(accountIdFromToken));
+    }
+
 }

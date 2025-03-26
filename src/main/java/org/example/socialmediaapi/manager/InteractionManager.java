@@ -29,7 +29,7 @@ public class InteractionManager {
     }
 
     public InteractionResponse save(InteractionRequest interactionRequest, HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader("Authorization").substring(7);
+        String token = jwtTokenProvider.resolveToken(httpServletRequest);
         int accountIdFromToken = jwtTokenProvider.getAccountIdFromToken(token);
         Account account = accountMapper.responseToAccount(accountManager.getById((long) accountIdFromToken));
         interactionRequest.setAccount(account);
@@ -38,7 +38,7 @@ public class InteractionManager {
     }
 
     public InteractionResponse update(InteractionRequest interactionRequest, HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader("Authorization").substring(7);
+        String token = jwtTokenProvider.resolveToken(httpServletRequest);
         int accountIdFromToken = jwtTokenProvider.getAccountIdFromToken(token);
         Account account = accountMapper.responseToAccount(accountManager.getById((long) accountIdFromToken));
         interactionRequest.setAccount(account);

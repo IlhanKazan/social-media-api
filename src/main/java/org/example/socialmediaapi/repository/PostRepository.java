@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByStatus(int status);
-    Post findByAccountIdAndStatus(Long accountId, int status);
+    Post findByPostIdAndStatus(Long id, int value);
 }

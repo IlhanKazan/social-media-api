@@ -1,16 +1,12 @@
--- Tüm şemayı ve bağımlı tabloları CASCADE ile sil (en güvenli yöntem)
-DROP SCHEMA IF EXISTS public CASCADE;
+/*DROP SCHEMA IF EXISTS public CASCADE;
 
--- Şemayı yeniden oluştur
 CREATE SCHEMA public;
 
--- ROLES tablosu (PostgreSQL için SERIAL kullanımı)
 CREATE TABLE public.ROLES (
                                         ROLEID SERIAL PRIMARY KEY,
                                         role VARCHAR(15) NOT NULL UNIQUE
 );
 
--- ACCOUNTS tablosu
 CREATE TABLE public.ACCOUNTS (
                                            accountId SERIAL PRIMARY KEY,
                                            username VARCHAR(15) NOT NULL UNIQUE,
@@ -23,7 +19,6 @@ CREATE TABLE public.ACCOUNTS (
                                            ROLEID INT NOT NULL REFERENCES public.ROLES(ROLEID) ON DELETE CASCADE
 );
 
--- POSTS tablosu
 CREATE TABLE public.POSTS (
                                         postId SERIAL PRIMARY KEY,
                                         accountId INT NOT NULL REFERENCES public.ACCOUNTS(accountId) ON DELETE CASCADE,
@@ -33,7 +28,6 @@ CREATE TABLE public.POSTS (
                                         updateDate TIMESTAMP
 );
 
--- INTERACTIONS tablosu
 CREATE TABLE public.INTERACTIONS (
                                                interactionId SERIAL PRIMARY KEY,
                                                accountId INT NOT NULL REFERENCES public.ACCOUNTS(accountId) ON DELETE CASCADE,
@@ -45,7 +39,6 @@ CREATE TABLE public.INTERACTIONS (
                                                updateDate TIMESTAMP
 );
 
--- Indexler (performans için)
 CREATE INDEX idx_accounts_roleid ON public.ACCOUNTS(ROLEID);
 CREATE INDEX idx_posts_accountid ON public.POSTS(accountId);
-CREATE INDEX idx_interactions_postid ON public.INTERACTIONS(postId);
+CREATE INDEX idx_interactions_postid ON public.INTERACTIONS(postId);*/

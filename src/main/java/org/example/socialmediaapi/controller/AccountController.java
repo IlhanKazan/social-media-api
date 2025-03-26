@@ -95,4 +95,10 @@ public class AccountController implements Controller<AccountRequest, AccountResp
         return accountManager.changePassword(httpServletRequest);
     }
 
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @GetMapping("/role")
+    public String getRole(HttpServletRequest httpServletRequest) {
+        return accountManager.getRole(httpServletRequest);
+    }
+
 }

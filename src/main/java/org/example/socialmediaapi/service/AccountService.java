@@ -16,4 +16,5 @@ public interface AccountService extends Service<AccountRequest, AccountResponse>
     AdminAccountResponse changePassword(Long id);
     boolean validateCredentials(String username, String password);
     AccountResponse loadUserByUsername(String username);
+    String getRole(Long id);
 }
