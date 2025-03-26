@@ -21,4 +21,4 @@ INSERT INTO public.INTERACTIONS (accountId, postId, context, type, status, creat
                                                                                                                  (2, 1, ' ', 1, DEFAULT, NOW(), NULL),
                                                                                                                  (3, 3, 'Gercekten buz gibiydi!', 0, DEFAULT, NOW(), NULL),
                                                                                                                  (4, 4, ' ', 1, DEFAULT, NOW(), NULL),
-                                                                                                                 (1, 1, ' ', 2, DEFAULT, NOW(), NULL);*/
+                                                                                                                 (1, 1, ' ', 2, DEFAULT, NOW(), NULL);
