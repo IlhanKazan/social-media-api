@@ -26,7 +26,7 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${allowed.origins}")
+    @Value("${ALLOWED_ORIGINS}")
     private String[] allowedOrigins;
 
     private final AccountDetailsServiceImpl accountDetailsServiceImpl;

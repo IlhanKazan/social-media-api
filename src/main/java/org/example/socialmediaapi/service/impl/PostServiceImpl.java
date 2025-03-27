@@ -8,11 +8,13 @@ import org.example.socialmediaapi.mappers.PostMapper;
 import org.example.socialmediaapi.repository.PostRepository;
 import org.example.socialmediaapi.service.AbstractService;
 import org.example.socialmediaapi.service.PostService;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+@CacheConfig(cacheNames = "posts")
 @Service
 public class PostServiceImpl extends AbstractService implements PostService {
 
@@ -24,6 +26,10 @@ public class PostServiceImpl extends AbstractService implements PostService {
         this.postMapper = postMapper;
     }
 
+    @Caching(
+            put = @CachePut(key = "#result.postId"),
+            evict = @CacheEvict(value = "allPosts", allEntries = true)
+    )
     @Override
     @Transactional
     public PostResponse save(PostRequest request) {
@@ -34,6 +40,10 @@ public class PostServiceImpl extends AbstractService implements PostService {
         return postMapper.postToResponse(post);
     }
 
+    @Caching(
+            put = @CachePut(key = "#result.postId"),
+            evict = @CacheEvict(value = "allPosts", allEntries = true)
+    )
     @Override
     @Transactional
     public PostResponse update(PostRequest newInfo) {
@@ -44,6 +54,12 @@ public class PostServiceImpl extends AbstractService implements PostService {
         return postMapper.postToResponse(oldPost);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#id"),
+                    @CacheEvict(value = "allPosts", allEntries = true)
+            }
+    )
     @Override
     @Transactional
     public PostResponse delete(Long id) {
@@ -54,12 +70,14 @@ public class PostServiceImpl extends AbstractService implements PostService {
         return postMapper.postToResponse(post);
     }
 
+    @Cacheable(key = "#id", unless = "#result == null")
     @Override
     public PostResponse getById(Long id) {
         Post post = postRepository.findByPostIdAndStatus(id, Status.ACTIVE.getValue());
         return postMapper.postToResponse(post);
     }
 
+    @Cacheable(value = "allPosts", key = "'active'", unless = "#result.isEmpty()")
     @Override
     public List<PostResponse> getAll() {
         List<Post> posts = postRepository.findAllByStatus(Status.ACTIVE.getValue());

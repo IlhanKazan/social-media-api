@@ -33,9 +33,10 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
     }
 
     @Caching(
-            put = {
-                    @CachePut(key = "#result.accountId"),
-                    @CachePut(value = "allAccounts", key = "#result.accountId"),
+            put = @CachePut(key = "#result.accountId"),
+            evict = {
+                    @CacheEvict(value = "allAccounts", allEntries = true),
+                    @CacheEvict(value = "adminAccounts", allEntries = true)
             }
     )
     @Override
@@ -51,10 +52,12 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
     }
 
     @Caching(
-            put = {
-                    @CachePut(key = "#result.accountId"),
-                    @CachePut(value = "allAccounts", key = "#result.accountId"),
-                    @CachePut(value = "accountByUsername", key = "#result.username")
+            put = @CachePut(key = "#result.accountId"),
+            evict = {
+                    @CacheEvict(value = "allAccounts", allEntries = true),
+                    @CacheEvict(value = "adminAccounts", allEntries = true),
+                    @CacheEvict(value = "accountByUsername", key = "#newInfo.username"),
+                    @CacheEvict(value = "adminAccountByUsername", key = "#newInfo.username")
             }
     )
     @Override
@@ -79,9 +82,11 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
 
     @Caching(
             evict = {
-                    @CacheEvict(key = "#result.accountId"),
-                    @CacheEvict(value = "allAccounts", key = "#result.accountId"),
-                    @CacheEvict(value = "accountByUsername", key = "#result.username")
+                    @CacheEvict(key = "#id"),
+                    @CacheEvict(value = "allAccounts", allEntries = true),
+                    @CacheEvict(value = "adminAccounts", allEntries = true),
+                    @CacheEvict(value = "accountByUsername", key = "#result.username"),
+                    @CacheEvict(value = "adminAccountByUsername", key = "#result.username")
             }
     )
     @Override
@@ -94,7 +99,15 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(account);
     }
 
-    @CacheEvict(value = "account", key = "#result.accountId")
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#id"),
+                    @CacheEvict(value = "allAccounts", allEntries = true),
+                    @CacheEvict(value = "adminAccounts", allEntries = true),
+                    @CacheEvict(value = "accountByUsername", key = "#result.username"),
+                    @CacheEvict(value = "adminAccountByUsername", key = "#result.username")
+            }
+    )
     @Transactional
     public AccountResponse userDelete(Long id) {
         Account account = accountRepository.getById(id);
@@ -110,19 +123,19 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
-    @Cacheable(key = "#id", unless = "#result == null")
+    @Cacheable(value = "accountByUsername", key = "#result.username", unless = "#result == null || #result.username == null")
     @Override
     public WebAccountResponse webGetById(Long id) {
         return accountMapper.accountToWebAccountResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
-    @Cacheable(value = "allAccounts", unless = "#result == null")
+    @Cacheable(value = "allAccounts", key = "'active'", unless = "#result.isEmpty()")
     @Override
     public List<WebAccountResponse> getAll() {
         return accountMapper.accountsToWebAccountResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
     }
 
-    @Cacheable(value = "adminAccounts", unless = "#result == null")
+    @Cacheable(value = "adminAccounts", key = "'active'", unless = "#result.isEmpty()")
     @Override
     public List<AdminAccountResponse> adminGetAll() {
         return accountMapper.accountsToAdminAccountResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));

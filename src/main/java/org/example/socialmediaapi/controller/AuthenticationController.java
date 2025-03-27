@@ -1,11 +1,13 @@
 package org.example.socialmediaapi.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.socialmediaapi.dto.request.AccountRequest;
 import org.example.socialmediaapi.dto.request.LoginRequest;
 import org.example.socialmediaapi.dto.response.AccountResponse;
 import org.example.socialmediaapi.dto.response.AuthResponse;
 import org.example.socialmediaapi.manager.AccountManager;
+import org.example.socialmediaapi.service.TokenRevocationService;
 import org.example.socialmediaapi.service.impl.AccountDetailsServiceImpl;
 import org.example.socialmediaapi.security.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +27,14 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountManager accountManager;
     private final AccountDetailsServiceImpl accountDetailsServiceImpl;
+    private final TokenRevocationService tokenRevocationService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, AccountManager accountManager, AccountDetailsServiceImpl accountDetailsServiceImpl) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, AccountManager accountManager, AccountDetailsServiceImpl accountDetailsServiceImpl, TokenRevocationService tokenRevocationService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.accountManager = accountManager;
         this.accountDetailsServiceImpl = accountDetailsServiceImpl;
+        this.tokenRevocationService = tokenRevocationService;
     }
 
     @PostMapping("/login")
@@ -61,4 +65,16 @@ public class AuthenticationController {
             return ResponseEntity.status(200).body("User registered successfully");
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest httpServletRequest) {
+
+        SecurityContextHolder.clearContext();
+
+        String token = jwtTokenProvider.resolveToken(httpServletRequest);
+        tokenRevocationService.blacklistToken(token);
+
+        return ResponseEntity.ok("Logged out successfully");
+    }
+
 }
