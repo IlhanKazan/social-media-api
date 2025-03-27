@@ -128,7 +128,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountsToAdminAccountResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
     }
 
-    @Cacheable(value = "accountByUsername", key = "#result.username", unless = "#result == null || #result.username == null")
+    @Cacheable(value = "accountByUsername", key = "#username", unless = "#result == null || #username == null")
     @Override
     public WebAccountResponse getByUsername(String username) {
         return accountMapper.accountToWebAccountResponse(accountRepository.findByUsernameAndStatus(username, Status.ACTIVE.getValue()));
