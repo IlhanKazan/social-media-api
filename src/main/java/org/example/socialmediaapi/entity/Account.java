@@ -1,9 +1,11 @@
 package org.example.socialmediaapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
+import org.example.socialmediaapi.constants.Status;
 import org.hibernate.annotations.Where;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
@@ -39,7 +41,7 @@ public class Account extends BaseEntity {
     @NotEmpty
     private String phone;
 
-    @Column(name = "ROLEID")
+    @Column(name = "ROLEID", columnDefinition = "INT DEFAULT 2")
     private int roleId;
 
     @ManyToOne(fetch = FetchType.EAGER)

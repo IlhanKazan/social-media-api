@@ -39,15 +39,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS yapılandırması
-                .csrf(csrf -> csrf.disable()) // CSRF'yi devre dışı bırak
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Oturum yönetimi
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/login", "/auth/signup").permitAll() // Public endpoint'ler
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // OPTIONS isteklerine izin ver
-                        .anyRequest().authenticated() // Diğer tüm istekler için kimlik doğrulama gerekli
+                        .requestMatchers("/auth/login", "/auth/signup").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtTokenFilter(secretKey, accountDetailsServiceImpl), UsernamePasswordAuthenticationFilter.class); // JWT filtresi ekle
+                .addFilterBefore(new JwtTokenFilter(secretKey, accountDetailsServiceImpl), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -64,12 +64,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins)); // İzin verilen origin'ler
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST")); // İzin verilen HTTP metodları
-        configuration.setAllowedHeaders(Arrays.asList("*")); // İzin verilen header'lar
-        configuration.setAllowCredentials(true); // Kimlik bilgilerine izin ver (örneğin, cookie'ler)
+        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Tüm endpoint'ler için CORS'u etkinleştir
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 

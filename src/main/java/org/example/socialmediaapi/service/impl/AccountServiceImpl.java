@@ -10,6 +10,7 @@ import org.example.socialmediaapi.mappers.AccountMapper;
 import org.example.socialmediaapi.repository.AccountRepository;
 import org.example.socialmediaapi.service.AbstractService;
 import org.example.socialmediaapi.service.AccountService;
+import org.springframework.cache.annotation.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Date;
 import java.util.List;
 
+@CacheConfig(cacheNames = "accounts")
 @Service
 public class AccountServiceImpl extends AbstractService implements AccountService {
 
@@ -30,6 +32,12 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Caching(
+            put = {
+                    @CachePut(key = "#result.accountId"),
+                    @CachePut(value = "allAccounts", key = "#result.accountId"),
+            }
+    )
     @Override
     @Transactional
     public AccountResponse save(AccountRequest request) {
@@ -42,6 +50,13 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(account);
     }
 
+    @Caching(
+            put = {
+                    @CachePut(key = "#result.accountId"),
+                    @CachePut(value = "allAccounts", key = "#result.accountId"),
+                    @CachePut(value = "accountByUsername", key = "#result.username")
+            }
+    )
     @Override
     @Transactional
     public AccountResponse update(AccountRequest newInfo) {
@@ -62,6 +77,13 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(oldAccount);
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#result.accountId"),
+                    @CacheEvict(value = "allAccounts", key = "#result.accountId"),
+                    @CacheEvict(value = "accountByUsername", key = "#result.username")
+            }
+    )
     @Override
     @Transactional
     public AccountResponse delete(Long id) {
@@ -72,6 +94,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(account);
     }
 
+    @CacheEvict(value = "account", key = "#result.accountId")
     @Transactional
     public AccountResponse userDelete(Long id) {
         Account account = accountRepository.getById(id);
@@ -81,31 +104,37 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(account);
     }
 
+    @Cacheable(key = "#id", unless = "#result == null")
     @Override
     public AccountResponse getById(Long id) {
         return accountMapper.accountToResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
+    @Cacheable(key = "#id", unless = "#result == null")
     @Override
     public WebAccountResponse webGetById(Long id) {
         return accountMapper.accountToWebAccountResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
+    @Cacheable(value = "allAccounts", unless = "#result == null")
     @Override
     public List<WebAccountResponse> getAll() {
         return accountMapper.accountsToWebAccountResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
     }
 
+    @Cacheable(value = "adminAccounts", unless = "#result == null")
     @Override
     public List<AdminAccountResponse> adminGetAll() {
         return accountMapper.accountsToAdminAccountResponses(accountRepository.findAllByStatus(Status.ACTIVE.getValue()));
     }
 
+    @Cacheable(value = "accountByUsername", key = "#result.username", unless = "#result == null")
     @Override
     public WebAccountResponse getByUsername(String username) {
         return accountMapper.accountToWebAccountResponse(accountRepository.findByUsernameAndStatus(username, Status.ACTIVE.getValue()));
     }
 
+    @Cacheable(value = "adminAccountByUsername", key = "#result.username", unless = "#result == null")
     @Override
     public AdminAccountResponse adminGetByUsername(String username) {
         return accountMapper.accountToAdminAccountResponse(accountRepository.findByUsernameAndStatus(username, Status.ACTIVE.getValue()));
