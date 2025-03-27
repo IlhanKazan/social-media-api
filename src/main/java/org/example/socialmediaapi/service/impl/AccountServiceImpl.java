@@ -56,6 +56,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
             evict = {
                     @CacheEvict(value = "allAccounts", allEntries = true),
                     @CacheEvict(value = "adminAccounts", allEntries = true),
+                    @CacheEvict(value = "webAccountById", key = "#newInfo.accountId"),
                     @CacheEvict(value = "accountByUsername", key = "#newInfo.username"),
                     @CacheEvict(value = "adminAccountByUsername", key = "#newInfo.username")
             }
@@ -85,6 +86,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
                     @CacheEvict(key = "#id"),
                     @CacheEvict(value = "allAccounts", allEntries = true),
                     @CacheEvict(value = "adminAccounts", allEntries = true),
+                    @CacheEvict(value = "webAccountById", key = "#result.accountId"),
                     @CacheEvict(value = "accountByUsername", key = "#result.username"),
                     @CacheEvict(value = "adminAccountByUsername", key = "#result.username")
             }
@@ -104,6 +106,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
                     @CacheEvict(key = "#id"),
                     @CacheEvict(value = "allAccounts", allEntries = true),
                     @CacheEvict(value = "adminAccounts", allEntries = true),
+                    @CacheEvict(value = "webAccountById", key = "#result.accountId"),
                     @CacheEvict(value = "accountByUsername", key = "#result.username"),
                     @CacheEvict(value = "adminAccountByUsername", key = "#result.username")
             }
@@ -123,7 +126,7 @@ public class AccountServiceImpl extends AbstractService implements AccountServic
         return accountMapper.accountToResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
     }
 
-    @Cacheable(value = "accountByUsername", key = "#result.username", unless = "#result == null || #result.username == null")
+    @Cacheable(value = "webAccountById", key = "#id", unless = "#result == null")
     @Override
     public WebAccountResponse webGetById(Long id) {
         return accountMapper.accountToWebAccountResponse(accountRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue()));
