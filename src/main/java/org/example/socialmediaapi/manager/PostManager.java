@@ -2,6 +2,7 @@ package org.example.socialmediaapi.manager;
 
 import org.example.socialmediaapi.constants.InteractionType;
 import org.example.socialmediaapi.dto.request.PostRequest;
+import org.example.socialmediaapi.dto.response.PagedResponse;
 import org.example.socialmediaapi.dto.response.PostResponse;
 import org.example.socialmediaapi.entity.Account;
 import org.example.socialmediaapi.entity.Interaction;
@@ -11,6 +12,10 @@ import org.example.socialmediaapi.mappers.PostMapper;
 import org.example.socialmediaapi.security.JwtTokenProvider;
 import org.example.socialmediaapi.service.InteractionService;
 import org.example.socialmediaapi.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -67,8 +72,8 @@ public class PostManager {
         return postService.getById(id);
     }
 
-    public List<PostResponse> getAll() {
-        return postService.getAll();
+    public PagedResponse<PostResponse> getAll(int page, int size) {
+        return postService.getAll(page, size);
     }
 
     public PostResponse getAllCommentsOfPost(Long postId) {

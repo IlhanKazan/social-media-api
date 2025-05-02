@@ -26,7 +26,7 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${ALLOWED_ORIGINS}")
+    @Value("{http://localhost:3000,http://192.168.1.147:3000,https://ilhandeploy.ilhan-kazan3664.workers.dev,http://localhost:8082/swagger-ui.html}")
     private String[] allowedOrigins;
 
     private final AccountDetailsServiceImpl accountDetailsServiceImpl;
@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/login", "/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtTokenFilter(secretKey, accountDetailsServiceImpl), UsernamePasswordAuthenticationFilter.class);
         return http.build();

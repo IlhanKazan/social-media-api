@@ -2,8 +2,13 @@ package org.example.socialmediaapi.controller;
 
 import jakarta.validation.Valid;
 import org.example.socialmediaapi.dto.request.PostRequest;
+import org.example.socialmediaapi.dto.response.PagedResponse;
 import org.example.socialmediaapi.dto.response.PostResponse;
 import org.example.socialmediaapi.manager.PostManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -51,8 +56,9 @@ public class PostController implements Controller<PostRequest, PostResponse>{
 
     @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @GetMapping("/get-all")
-    public List<PostResponse> getAll(){
-        return postManager.getAll();
+    public PagedResponse<PostResponse> getAll(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size){
+        return postManager.getAll(page, size);
     }
 
     @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")

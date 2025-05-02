@@ -1,10 +1,13 @@
 package org.example.socialmediaapi.mappers;
 
 import org.example.socialmediaapi.dto.request.PostRequest;
+import org.example.socialmediaapi.dto.response.PagedResponse;
 import org.example.socialmediaapi.dto.response.PostResponse;
 import org.example.socialmediaapi.entity.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -23,4 +26,5 @@ public interface PostMapper {
     Post responseToPost(PostResponse postResponse);
 
     List<PostResponse> postsToResponses(List<Post> posts);
+
 }
