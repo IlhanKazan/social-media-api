@@ -4,6 +4,7 @@ import org.example.socialmediaapi.constants.InteractionType;
 import org.example.socialmediaapi.dto.request.InteractionRequest;
 import org.example.socialmediaapi.dto.response.InteractionResponse;
 import org.example.socialmediaapi.manager.InteractionManager;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,19 +37,34 @@ public class InteractionController implements Controller<InteractionRequest, Int
     }
 
     @Override
-    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin-delete/{id}")
     public InteractionResponse delete(@PathVariable Long id) {
         return interactionManager.delete(id);
     }
 
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @GetMapping("/delete/{id}")
+    public InteractionResponse userDelete(HttpServletRequest httpServletRequest, @PathVariable Long id) {
+        return interactionManager.userDelete(httpServletRequest, id);
+    }
+
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @GetMapping("/get-by-id/{id}")
     public InteractionResponse getById(@PathVariable Long id) {
         return interactionManager.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
     @GetMapping("/get-all")
     public List<InteractionResponse> getAll() {
         return interactionManager.getAll();
+    }
+
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @GetMapping("/get-all-by-post/{id}")
+    public List<InteractionResponse> getAllByPost(@PathVariable Long id) {
+        return interactionManager.getAllByPost(id);
     }
 
     @GetMapping("/get-all-comments")

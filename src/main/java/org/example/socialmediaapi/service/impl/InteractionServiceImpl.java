@@ -27,14 +27,6 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
         this.interactionMapper = interactionMapper;
     }
 
-    @Caching(
-            put = @CachePut(key = "#result.interactionId", unless = "#result == null"),
-            evict = {
-                    @CacheEvict(value = "interactionsByPost", key = "#request.postId"),
-                    @CacheEvict(value = "interactionsByAccount", key = "#request.accountId"),
-                    @CacheEvict(value = "interactionsByType", key = "#request.type")
-            }
-    )
     @Override
     @Transactional
     public InteractionResponse save(InteractionRequest request) {
@@ -65,14 +57,6 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
         }
     }
 
-    @Caching(
-            put = @CachePut(key = "#result.interactionId"),
-            evict = {
-                    @CacheEvict(value = "interactionsByPost", key = "#oldInteraction.postId"),
-                    @CacheEvict(value = "interactionsByAccount", key = "#oldInteraction.accountId"),
-                    @CacheEvict(value = "interactionsByType", key = "#oldInteraction.type")
-            }
-    )
     @Override
     @Transactional
     public InteractionResponse update(InteractionRequest newInfo) {
@@ -86,14 +70,6 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
         return interactionMapper.interactionToResponse(oldInteraction);
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(key = "#id"),
-                    @CacheEvict(value = "interactionsByPost", key = "#result.postId"),
-                    @CacheEvict(value = "interactionsByAccount", key = "#result.accountId"),
-                    @CacheEvict(value = "interactionsByType", key = "#result.type")
-            }
-    )
     @Override
     @Transactional
     public InteractionResponse delete(Long id) {
@@ -104,30 +80,33 @@ public class InteractionServiceImpl extends AbstractService implements Interacti
         return interactionMapper.interactionToResponse(interaction);
     }
 
-    @Cacheable(key = "#id", unless = "#result == null")
     @Override
     public InteractionResponse getById(Long id) {
-        Interaction interaction = interactionRepository.findByAccountIdAndStatus(id, Status.ACTIVE.getValue());
+        Interaction interaction = interactionRepository.findByInteractionIdAndStatus(Integer.parseInt(String.valueOf(id)), Status.ACTIVE.getValue());
         return interactionMapper.interactionToResponse(interaction);
     }
 
-    @Cacheable(value = "allInteractions", key = "'active'", unless = "#result.isEmpty()")
     @Override
     public List<InteractionResponse> getAll() {
         List<Interaction> interactions = interactionRepository.findAllByStatus(Status.ACTIVE.getValue());
         return interactionMapper.interactionsToResponses(interactions);
     }
 
-    @Cacheable(value = "interactionsByType", key = "#type", unless = "#result.isEmpty()")
     @Override
     public List<InteractionResponse> getByType(int type) {
         List<Interaction> interactions = interactionRepository.findAllByType(type);
         return interactionMapper.interactionsToResponses(interactions);
     }
 
-    @Cacheable(value = "interactionsByPost", key = "#postId", unless = "#result.isEmpty()")
     @Override
-    public List<Interaction> getAllByPostIdAndType(int postId, int type) {
-        return interactionRepository.findAllByPost_PostIdAndType(postId, type);
+    public List<InteractionResponse> getAllByPostIdAndType(int postId, int type) {
+        List<Interaction> interactions = interactionRepository.findAllByPost_PostIdAndType(postId, type);
+        return interactionMapper.interactionsToResponses(interactions);
+    }
+
+    @Override
+    public List<InteractionResponse> getAllByPost(Long postId) {
+        List<Interaction> interactions = interactionRepository.findAllByPostIdAndStatus(Integer.parseInt(String.valueOf(postId)), Status.ACTIVE.getValue());
+        return interactionMapper.interactionsToResponses(interactions);
     }
 }

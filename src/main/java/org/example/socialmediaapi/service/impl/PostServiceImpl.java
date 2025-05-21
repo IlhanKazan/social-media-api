@@ -28,10 +28,6 @@ public class PostServiceImpl extends AbstractService implements PostService {
         this.postMapper = postMapper;
     }
 
-    @Caching(
-            put = @CachePut(key = "#result.postId"),
-            evict = @CacheEvict(value = "allPosts", allEntries = true)
-    )
     @Override
     @Transactional
     public PostResponse save(PostRequest request) {
@@ -42,10 +38,6 @@ public class PostServiceImpl extends AbstractService implements PostService {
         return postMapper.postToResponse(post);
     }
 
-    @Caching(
-            put = @CachePut(key = "#result.postId"),
-            evict = @CacheEvict(value = "allPosts", allEntries = true)
-    )
     @Override
     @Transactional
     public PostResponse update(PostRequest newInfo) {
@@ -56,12 +48,6 @@ public class PostServiceImpl extends AbstractService implements PostService {
         return postMapper.postToResponse(oldPost);
     }
 
-    @Caching(
-            evict = {
-                    @CacheEvict(key = "#id"),
-                    @CacheEvict(value = "allPosts", allEntries = true)
-            }
-    )
     @Override
     @Transactional
     public PostResponse delete(Long id) {
@@ -72,7 +58,6 @@ public class PostServiceImpl extends AbstractService implements PostService {
         return postMapper.postToResponse(post);
     }
 
-    @Cacheable(key = "#id", unless = "#result == null")
     @Override
     public PostResponse getById(Long id) {
         Post post = postRepository.findByPostIdAndStatus(id, Status.ACTIVE.getValue());
@@ -83,6 +68,22 @@ public class PostServiceImpl extends AbstractService implements PostService {
     public PagedResponse<PostResponse> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createDate").descending());
         Page<Post> posts = postRepository.findAllByStatus(Status.ACTIVE.getValue(), pageable);
+        List<PostResponse> responseList = postMapper.postsToResponses(posts.getContent());
+        Page<PostResponse> postResponses = new PageImpl<>(responseList, pageable, posts.getTotalElements());
+        return new PagedResponse<>(
+                postResponses.getContent(),
+                postResponses.getNumber(),
+                postResponses.getSize(),
+                postResponses.getTotalElements(),
+                postResponses.getTotalPages(),
+                postResponses.isLast()
+        );
+    }
+
+    @Override
+    public PagedResponse<PostResponse> getAllPostsOfUser(int page, int size, Long id) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createDate").descending());
+        Page<Post> posts = postRepository.findAllByStatusAndAccountId(Status.ACTIVE.getValue(), id, pageable);
         List<PostResponse> responseList = postMapper.postsToResponses(posts.getContent());
         Page<PostResponse> postResponses = new PageImpl<>(responseList, pageable, posts.getTotalElements());
         return new PagedResponse<>(

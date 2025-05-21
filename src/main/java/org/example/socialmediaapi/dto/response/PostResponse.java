@@ -22,5 +22,6 @@ public class PostResponse extends Response {
     private int status;
     private Date createDate;
     private Date updateDate;
+    @JsonIgnore
     private List<Interaction> interactions;
 }

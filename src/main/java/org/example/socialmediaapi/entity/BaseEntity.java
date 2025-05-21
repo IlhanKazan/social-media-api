@@ -21,7 +21,6 @@ import java.util.Date;
 public abstract class BaseEntity {
 
     @Column(name = "STATUS", nullable = false, columnDefinition = "INT DEFAULT 1")
-    @NotNull
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public int status;
 

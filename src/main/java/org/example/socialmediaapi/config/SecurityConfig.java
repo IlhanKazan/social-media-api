@@ -26,11 +26,13 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("{http://localhost:3000,http://192.168.1.147:3000,https://ilhandeploy.ilhan-kazan3664.workers.dev,http://localhost:8082/swagger-ui.html}")
+    @Value("${allowed.origins}")
     private String[] allowedOrigins;
 
+    @Value("${secretKey}")
+    private String secretKey;
+
     private final AccountDetailsServiceImpl accountDetailsServiceImpl;
-    private final String secretKey = "ilhan_secret_key";
 
     public SecurityConfig(AccountDetailsServiceImpl accountDetailsServiceImpl) {
         this.accountDetailsServiceImpl = accountDetailsServiceImpl;
@@ -43,9 +45,21 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/login", "/auth/signup").permitAll()
+                        .requestMatchers(
+                                "/auth/login",
+                                "/auth/signup"
+
+                        ).permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/swagger-ui.html",
+                                "/webjars/**",
+                                "/v3/api-docs.yaml"
+                        ).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtTokenFilter(secretKey, accountDetailsServiceImpl), UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -65,7 +79,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

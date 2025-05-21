@@ -10,5 +10,6 @@ public interface InteractionService extends Service<InteractionRequest, Interact
     InteractionResponse getById(Long id);
     List<InteractionResponse> getAll();
     List<InteractionResponse> getByType(int type);
-    List<Interaction> getAllByPostIdAndType(int postId, int type);
+    List<InteractionResponse> getAllByPostIdAndType(int postId, int type);
+    List<InteractionResponse> getAllByPost(Long postId);
 }

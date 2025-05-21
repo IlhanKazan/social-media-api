@@ -42,10 +42,16 @@ public class PostController implements Controller<PostRequest, PostResponse>{
     }
 
     @Override
-    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
-    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin-delete/{id}")
     public PostResponse delete(@PathVariable Long id) {
         return postManager.delete(id);
+    }
+
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @GetMapping("/delete/{id}")
+    public PostResponse userDelete(HttpServletRequest httpServletRequest, @PathVariable Long id) {
+        return postManager.userDelete(httpServletRequest, id);
     }
 
     @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
@@ -59,6 +65,14 @@ public class PostController implements Controller<PostRequest, PostResponse>{
     public PagedResponse<PostResponse> getAll(@RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "10") int size){
         return postManager.getAll(page, size);
+    }
+
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")
+    @GetMapping("/get-all-posts-of-user/{id}")
+    public PagedResponse<PostResponse> getAllPostsOfUser(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size,
+                                                         @PathVariable Long id){
+        return postManager.getAllPostsOfUser(page, size, id);
     }
 
     @PreAuthorize("hasAnyRole({'ROLE_ADMIN', 'ROLE_USER'})")

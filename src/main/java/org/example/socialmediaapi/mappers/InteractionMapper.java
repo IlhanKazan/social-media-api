@@ -26,5 +26,9 @@ public interface InteractionMapper {
     @Mapping(source = "account.username", target = "accountUsername")
     InteractionResponse interactionToResponse(Interaction interaction);
 
+    Interaction responseToInteraction(InteractionResponse interactionResponse);
+
     List<InteractionResponse> interactionsToResponses(List<Interaction> interactions);
+
+    List<Interaction> responsesToInteractions(List<InteractionResponse> interactionResponses);
 }

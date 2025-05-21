@@ -9,9 +9,10 @@ import java.util.List;
 @Repository
 public interface InteractionRepository extends JpaRepository<Interaction, Long> {
     List<Interaction> findAllByStatus(int status);
-    Interaction findByAccountIdAndStatus(Long id, int status);
+    Interaction findByInteractionIdAndStatus(int id, int status);
     List<Interaction> findAllByType(int type);
     List<Interaction> findAllByPost_PostIdAndType(int postId, int type);
     Interaction findByAccountIdAndPostIdAndTypeAndStatus(int accountId, int postId, int type, int status);
     Interaction findByAccountIdAndPostIdAndStatus(int accountId, int postId, int status);
+    List<Interaction> findAllByPostIdAndStatus(int accountId, int status);
 }

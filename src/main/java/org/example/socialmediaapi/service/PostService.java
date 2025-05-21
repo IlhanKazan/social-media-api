@@ -10,4 +10,5 @@ import org.springframework.data.domain.Pageable;
 public interface PostService extends Service<PostRequest, PostResponse>{
     PostResponse getById(Long id);
     PagedResponse<PostResponse> getAll(int page, int size);
+    PagedResponse<PostResponse> getAllPostsOfUser(int page, int size, Long id);
 }
